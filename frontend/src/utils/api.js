@@ -1,10 +1,13 @@
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 function handleResponse(response) {
   if (!response.ok) {
-    return response.json().catch(() => ({})).then((data) => {
-      throw new Error(data.message || `Request failed with status ${response.status}`);
-    });
+    return response
+      .json()
+      .catch(() => ({}))
+      .then((data) => {
+        throw new Error(data.message || `Request failed with status ${response.status}`);
+      });
   }
 
   return response.json();

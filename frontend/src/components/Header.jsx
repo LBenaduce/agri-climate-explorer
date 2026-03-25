@@ -13,7 +13,7 @@ function Header({
   return (
     <header className="header">
       <Link to="/" className="header__brand">
-        Agri<span className="header__brand-accent">Climate</span> Pro
+        Agri<span className="header__brand-accent">Climate</span> Explorer
       </Link>
 
       <nav className="header__nav">
