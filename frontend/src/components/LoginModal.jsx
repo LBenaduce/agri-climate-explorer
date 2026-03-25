@@ -1,0 +1,50 @@
+import { useState } from "react";
+
+function LoginModal({ isOpen, onClose, onSubmit, error, t }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    onSubmit({ email, password });
+  }
+
+  return (
+    <div className={`auth-modal ${isOpen ? "auth-modal_opened" : ""}`}>
+      <div className="auth-modal__content">
+        <h2 className="auth-modal__title">{t.loginTitle}</h2>
+        <form className="auth-modal__form" onSubmit={handleSubmit}>
+          <input
+            className="auth-modal__input"
+            type="email"
+            placeholder={t.email}
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+          />
+          <input
+            className="auth-modal__input"
+            type="password"
+            placeholder={t.password}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+          />
+
+          {error ? <span className="error-text">{error}</span> : null}
+
+          <div className="auth-modal__footer">
+            <button type="button" className="ghost-button" onClick={onClose}>
+              {t.cancel}
+            </button>
+            <button type="submit" className="primary-button">
+              {t.enter}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default LoginModal;
