@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import "./Header.css";
 import { languageOptions } from "../utils/translations";
 
 function Header({

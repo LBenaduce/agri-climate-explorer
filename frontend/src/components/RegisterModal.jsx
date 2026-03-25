@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Modal from "./Modal";
+import "./RegisterModal.css";
 
 function RegisterModal({ isOpen, onClose, onSubmit, error, t }) {
   const [name, setName] = useState("");
@@ -11,16 +13,19 @@ function RegisterModal({ isOpen, onClose, onSubmit, error, t }) {
   }
 
   return (
-    <div className={`auth-modal ${isOpen ? "auth-modal_opened" : ""}`}>
-      <div className="auth-modal__content">
-        <h2 className="auth-modal__title">{t.registerTitle}</h2>
-        <form className="auth-modal__form" onSubmit={handleSubmit}>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="auth-modal__content" role="dialog" aria-modal="true" aria-labelledby="register-modal-title">
+        <h2 className="auth-modal__title" id="register-modal-title">{t.registerTitle}</h2>
+        <form className="auth-modal__form" onSubmit={handleSubmit} noValidate>
           <input
             className="auth-modal__input"
             type="text"
             placeholder={t.name}
             value={name}
             onChange={(event) => setName(event.target.value)}
+            autoComplete="name"
+            minLength="2"
+            maxLength="40"
             required
           />
           <input
@@ -29,6 +34,7 @@ function RegisterModal({ isOpen, onClose, onSubmit, error, t }) {
             placeholder={t.email}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            autoComplete="email"
             required
           />
           <input
@@ -37,6 +43,7 @@ function RegisterModal({ isOpen, onClose, onSubmit, error, t }) {
             placeholder={t.password}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            autoComplete="new-password"
             minLength="6"
             required
           />
@@ -53,7 +60,7 @@ function RegisterModal({ isOpen, onClose, onSubmit, error, t }) {
           </div>
         </form>
       </div>
-    </div>
+    </Modal>
   );
 }
 

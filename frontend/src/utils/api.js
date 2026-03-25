@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
 function handleResponse(response) {
   if (!response.ok) {
@@ -14,8 +14,12 @@ function handleResponse(response) {
 }
 
 export const weatherApi = {
-  getWeather(city) {
-    return fetch(`${BASE_URL}/weather?city=${encodeURIComponent(city)}`).then(handleResponse);
+  getWeather(city, token) {
+    return fetch(`${BASE_URL}/weather?city=${encodeURIComponent(city)}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(handleResponse);
   }
 };
 

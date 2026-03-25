@@ -1,51 +1,91 @@
+import {
+  BASE_RISK_SCORE,
+  EMPTY_RECOMMENDATIONS,
+  EXTREME_TEMPERATURE_HIGH,
+  EXTREME_TEMPERATURE_LOW,
+  EXTREME_TEMPERATURE_PENALTY,
+  HIGH_HUMIDITY_RAIN_PENALTY,
+  HIGH_HUMIDITY_THRESHOLD,
+  HIGH_RAINFALL_THRESHOLD,
+  HIGH_RISK_THRESHOLD,
+  HIGH_WIND_PENALTY,
+  HIGH_WIND_THRESHOLD,
+  HUMIDITY_WEIGHT,
+  IDEAL_TEMPERATURE_MAX,
+  IDEAL_TEMPERATURE_MIN,
+  IRRIGATION_RAIN_THRESHOLD,
+  LOW_HUMIDITY_THRESHOLD,
+  MAX_HUMIDITY_SCORE,
+  MAX_RAINFALL_SCORE,
+  MAX_RISK_SCORE,
+  MAX_WIND_SCORE,
+  MEDIUM_RISK_THRESHOLD,
+  MIN_TREND_TEMPERATURE,
+  PLANTING_RAIN_THRESHOLD,
+  RAINFALL_WEIGHT,
+  SPRAYING_WIND_THRESHOLD,
+  TREND_BASE_RAINFALL,
+  TREND_BASE_TEMPERATURE,
+  TREND_DATA_OFFSETS,
+  WIND_WEIGHT,
+} from "../config/agriConstants";
+
 export function calculateRisk(weather) {
   if (!weather) return { score: 0, level: "low" };
 
-  let score = 18;
-  score += Math.min(weather.humidity || 0, 100) * 0.22;
-  score += Math.min(weather.rainfall || 0, 40) * 1.3;
-  score += Math.min(weather.wind || 0, 50) * 0.7;
+  let score = BASE_RISK_SCORE;
+  score += Math.min(weather.humidity || 0, MAX_HUMIDITY_SCORE) * HUMIDITY_WEIGHT;
+  score += Math.min(weather.rainfall || 0, MAX_RAINFALL_SCORE) * RAINFALL_WEIGHT;
+  score += Math.min(weather.wind || 0, MAX_WIND_SCORE) * WIND_WEIGHT;
 
   const temperature = weather.temperature || 0;
-  if (temperature < 10 || temperature > 34) score += 12;
-  if ((weather.humidity || 0) > 80 && (weather.rainfall || 0) > 10) score += 10;
-  if ((weather.wind || 0) > 25) score += 8;
+  if (temperature < EXTREME_TEMPERATURE_LOW || temperature > EXTREME_TEMPERATURE_HIGH) {
+    score += EXTREME_TEMPERATURE_PENALTY;
+  }
 
-  score = Math.max(0, Math.min(100, Math.round(score)));
+  if ((weather.humidity || 0) > HIGH_HUMIDITY_THRESHOLD && (weather.rainfall || 0) > HIGH_RAINFALL_THRESHOLD) {
+    score += HIGH_HUMIDITY_RAIN_PENALTY;
+  }
+
+  if ((weather.wind || 0) > HIGH_WIND_THRESHOLD) {
+    score += HIGH_WIND_PENALTY;
+  }
+
+  score = Math.max(0, Math.min(MAX_RISK_SCORE, Math.round(score)));
 
   let level = "low";
-  if (score >= 67) level = "high";
-  else if (score >= 40) level = "medium";
+  if (score >= HIGH_RISK_THRESHOLD) level = "high";
+  else if (score >= MEDIUM_RISK_THRESHOLD) level = "medium";
 
   return { score, level };
 }
 
 export function getRecommendations(weather) {
   if (!weather) {
-    return { planting: "-", irrigation: "-", disease: "-", spraying: "-" };
+    return EMPTY_RECOMMENDATIONS;
   }
 
   const planting =
-    weather.rainfall > 18
+    weather.rainfall > PLANTING_RAIN_THRESHOLD
       ? "Delay sensitive field operations until rainfall decreases."
-      : weather.temperature >= 18 && weather.temperature <= 30
-      ? "Good window for many planting activities."
-      : "Use crop-specific timing before planting.";
+      : weather.temperature >= IDEAL_TEMPERATURE_MIN && weather.temperature <= IDEAL_TEMPERATURE_MAX
+        ? "Good window for many planting activities."
+        : "Use crop-specific timing before planting.";
 
   const irrigation =
-    weather.rainfall > 10
+    weather.rainfall > IRRIGATION_RAIN_THRESHOLD
       ? "Irrigation demand may be reduced in the short term."
-      : weather.humidity < 55
-      ? "Monitor soil moisture and consider supplemental irrigation."
-      : "Maintain regular irrigation monitoring.";
+      : weather.humidity < LOW_HUMIDITY_THRESHOLD
+        ? "Monitor soil moisture and consider supplemental irrigation."
+        : "Maintain regular irrigation monitoring.";
 
   const disease =
-    weather.humidity > 80
+    weather.humidity > HIGH_HUMIDITY_THRESHOLD
       ? "Higher fungal pressure is possible. Increase monitoring."
       : "Disease pressure appears more moderate right now.";
 
   const spraying =
-    weather.wind > 22
+    weather.wind > SPRAYING_WIND_THRESHOLD
       ? "Avoid spraying in stronger wind conditions."
       : "Spraying conditions look more favorable.";
 
@@ -53,14 +93,12 @@ export function getRecommendations(weather) {
 }
 
 export function buildTrendData(weather) {
-  const baseTemp = weather?.temperature || 24;
-  const baseRain = weather?.rainfall || 6;
+  const baseTemp = weather?.temperature || TREND_BASE_TEMPERATURE;
+  const baseRain = weather?.rainfall || TREND_BASE_RAINFALL;
 
-  return [
-    { day: "Mon", temp: Math.max(8, baseTemp - 2), rain: Math.max(0, baseRain - 2) },
-    { day: "Tue", temp: Math.max(8, baseTemp - 1), rain: Math.max(0, baseRain - 1) },
-    { day: "Wed", temp: baseTemp, rain: baseRain },
-    { day: "Thu", temp: Math.max(8, baseTemp + 1), rain: Math.max(0, baseRain + 2) },
-    { day: "Fri", temp: Math.max(8, baseTemp + 2), rain: Math.max(0, baseRain + 1) }
-  ];
+  return TREND_DATA_OFFSETS.map(({ day, tempOffset, rainOffset }) => ({
+    day,
+    temp: Math.max(MIN_TREND_TEMPERATURE, baseTemp + tempOffset),
+    rain: Math.max(0, baseRain + rainOffset),
+  }));
 }

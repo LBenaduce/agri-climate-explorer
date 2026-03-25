@@ -1,10 +1,5 @@
 import SearchForm from "../components/SearchForm";
-import WeatherCard from "../components/WeatherCard";
-import Preloader from "../components/Preloader";
-import RiskScoreCard from "../components/RiskScoreCard";
-import ClimateTrendChart from "../components/ClimateTrendChart";
-import RecommendationsCard from "../components/RecommendationsCard";
-import GlobalCoverageCard from "../components/GlobalCoverageCard";
+import WeatherResultsSection from "./WeatherResultsSection";
 
 function HomePage({
   weather,
@@ -25,47 +20,36 @@ function HomePage({
           <p className="hero__text">{t.heroText}</p>
         </div>
 
-        <div className="hero__stats">
-          <div className="stat">
+        <ul className="hero__stats">
+          <li className="stat">
             <span className="stat__value">{t.statOneValue}</span>
             <span className="stat__label">{t.statOneLabel}</span>
-          </div>
-          <div className="stat">
+          </li>
+          <li className="stat">
             <span className="stat__value">{t.statTwoValue}</span>
             <span className="stat__label">{t.statTwoLabel}</span>
-          </div>
-          <div className="stat">
+          </li>
+          <li className="stat">
             <span className="stat__value">{t.statThreeValue}</span>
             <span className="stat__label">{t.statThreeLabel}</span>
-          </div>
-        </div>
+          </li>
+        </ul>
       </section>
 
       <section className="section">
         <SearchForm onSearch={onSearch} t={t} />
       </section>
 
-      <section className="section">
-        {loading ? <Preloader t={t} /> : null}
-        {error ? <p className="error-text">{error}</p> : null}
-        {!loading && !error && weather ? (
-          <>
-            <WeatherCard
-              weather={weather}
-              isLoggedIn={isLoggedIn}
-              onSave={onSaveLocation}
-              t={t}
-              language={language}
-            />
-            <div className="grid startup-grid">
-              <RiskScoreCard weather={weather} t={t} />
-              <ClimateTrendChart weather={weather} t={t} />
-              <RecommendationsCard weather={weather} t={t} />
-              <GlobalCoverageCard weather={weather} t={t} />
-            </div>
-          </>
-        ) : null}
-      </section>
+      <WeatherResultsSection
+        weather={weather}
+        loading={loading}
+        error={error}
+        isLoggedIn={isLoggedIn}
+        onSaveLocation={onSaveLocation}
+        t={t}
+        language={language}
+        className="section"
+      />
     </>
   );
 }

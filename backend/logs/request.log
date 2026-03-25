@@ -1,0 +1,5 @@
+2026-03-25T20:01:22.438Z GET /api/users/me 200 13ms
+2026-03-25T20:01:22.439Z GET /api/users/me 200 10ms
+2026-03-25T20:01:22.449Z GET /api/locations 200 2ms
+2026-03-25T20:01:22.449Z GET /api/locations 200 8ms
+2026-03-25T20:01:26.873Z GET /api/weather?city=Santa%20Maria 200 2ms

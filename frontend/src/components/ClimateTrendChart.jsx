@@ -1,4 +1,5 @@
 import { buildTrendData } from "../utils/agriInsights";
+import "./ClimateTrendChart.css";
 
 function ClimateTrendChart({ weather, t }) {
   const data = buildTrendData(weather);

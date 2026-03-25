@@ -1,4 +1,5 @@
 import { translateSummaryAndInsight } from "../utils/weatherTranslations";
+import "./WeatherCard.css";
 
 function WeatherCard({ weather, isLoggedIn, onSave, t, language }) {
   if (!weather) return null;
@@ -11,13 +12,13 @@ function WeatherCard({ weather, isLoggedIn, onSave, t, language }) {
         {weather.city}, {weather.country}
       </h2>
 
-      <div className="card__meta">
-        <span>{t.temperature}: {weather.temperature}°C</span>
-        <span>{t.humidity}: {weather.humidity}%</span>
-        <span>{t.rainfall}: {weather.rainfall} mm</span>
-        <span>{t.wind}: {weather.wind} km/h</span>
-        <span>{t.conditions}: {summary}</span>
-      </div>
+      <ul className="card__meta">
+        <li>{t.temperature}: {weather.temperature}°C</li>
+        <li>{t.humidity}: {weather.humidity}%</li>
+        <li>{t.rainfall}: {weather.rainfall} mm</li>
+        <li>{t.wind}: {weather.wind} km/h</li>
+        <li>{t.conditions}: {summary}</li>
+      </ul>
 
       <div className="card__insight">
         <strong>{t.agriculturalInsight}:</strong> {insight}

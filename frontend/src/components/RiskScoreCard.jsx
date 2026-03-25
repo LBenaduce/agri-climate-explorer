@@ -1,4 +1,5 @@
 import { calculateRisk } from "../utils/agriInsights";
+import "./RiskScoreCard.css";
 
 function RiskScoreCard({ weather, t }) {
   const { score, level } = calculateRisk(weather);

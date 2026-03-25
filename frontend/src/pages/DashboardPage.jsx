@@ -1,10 +1,5 @@
 import SearchForm from "../components/SearchForm";
-import WeatherCard from "../components/WeatherCard";
-import Preloader from "../components/Preloader";
-import RiskScoreCard from "../components/RiskScoreCard";
-import ClimateTrendChart from "../components/ClimateTrendChart";
-import RecommendationsCard from "../components/RecommendationsCard";
-import GlobalCoverageCard from "../components/GlobalCoverageCard";
+import WeatherResultsSection from "./WeatherResultsSection";
 
 function DashboardPage({
   weather,
@@ -22,27 +17,16 @@ function DashboardPage({
 
       <SearchForm onSearch={onSearch} t={t} />
 
-      <div style={{ marginTop: "22px" }}>
-        {loading ? <Preloader t={t} /> : null}
-        {error ? <p className="error-text">{error}</p> : null}
-        {!loading && !error && weather ? (
-          <>
-            <WeatherCard
-              weather={weather}
-              isLoggedIn={true}
-              onSave={onSaveLocation}
-              t={t}
-              language={language}
-            />
-            <div className="grid startup-grid">
-              <RiskScoreCard weather={weather} t={t} />
-              <ClimateTrendChart weather={weather} t={t} />
-              <RecommendationsCard weather={weather} t={t} />
-              <GlobalCoverageCard weather={weather} t={t} />
-            </div>
-          </>
-        ) : null}
-      </div>
+      <WeatherResultsSection
+        weather={weather}
+        loading={loading}
+        error={error}
+        isLoggedIn
+        onSaveLocation={onSaveLocation}
+        t={t}
+        language={language}
+        className="section section_compact-top"
+      />
     </section>
   );
 }

@@ -1,0 +1,21 @@
+const NAME_MIN_LENGTH = 2;
+const NAME_MAX_LENGTH = 40;
+const PASSWORD_MIN_LENGTH = 6;
+const INVALID_AUTH_MESSAGE = 'Incorrect email or password';
+const DUPLICATE_EMAIL_MESSAGE = 'Email already exists';
+const USER_NOT_FOUND_MESSAGE = 'User not found';
+const LOCATION_NOT_FOUND_MESSAGE = 'Location not found';
+const INVALID_ID_MESSAGE = 'Invalid ID';
+const CITY_REQUIRED_MESSAGE = 'City is required';
+
+module.exports = {
+  NAME_MIN_LENGTH,
+  NAME_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  INVALID_AUTH_MESSAGE,
+  DUPLICATE_EMAIL_MESSAGE,
+  USER_NOT_FOUND_MESSAGE,
+  LOCATION_NOT_FOUND_MESSAGE,
+  INVALID_ID_MESSAGE,
+  CITY_REQUIRED_MESSAGE,
+};

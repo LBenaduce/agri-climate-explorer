@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./SearchForm.css";
 
 function SearchForm({ onSearch, t }) {
   const [city, setCity] = useState("");
@@ -23,6 +24,7 @@ function SearchForm({ onSearch, t }) {
           placeholder={t.searchPlaceholder}
           value={city}
           onChange={(event) => setCity(event.target.value)}
+          required
         />
         <button className="primary-button" type="submit">
           {t.searchButton}

@@ -1,3 +1,4 @@
+import "./GlobalCoverageCard.css";
 function GlobalCoverageCard({ weather, t }) {
   const city = weather?.city || "—";
   const country = weather?.country || "—";

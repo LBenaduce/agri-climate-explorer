@@ -6,12 +6,12 @@ function RecommendationsCard({ weather, t }) {
   return (
     <article className="card">
       <h3 className="card__title">{t.recommendationsTitle}</h3>
-      <div className="saved-card__meta">
-        <span><strong>{t.recommendationsPlanting}:</strong> {items.planting}</span>
-        <span><strong>{t.recommendationsIrrigation}:</strong> {items.irrigation}</span>
-        <span><strong>{t.recommendationsDisease}:</strong> {items.disease}</span>
-        <span><strong>{t.recommendationsSpraying}:</strong> {items.spraying}</span>
-      </div>
+      <ul className="saved-card__meta">
+        <li><strong>{t.recommendationsPlanting}:</strong> {items.planting}</li>
+        <li><strong>{t.recommendationsIrrigation}:</strong> {items.irrigation}</li>
+        <li><strong>{t.recommendationsDisease}:</strong> {items.disease}</li>
+        <li><strong>{t.recommendationsSpraying}:</strong> {items.spraying}</li>
+      </ul>
     </article>
   );
 }

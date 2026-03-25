@@ -63,11 +63,18 @@ function App() {
   }
 
   function handleWeatherSearch(city) {
+    const token = localStorage.getItem("jwt");
+
+    if (!token) {
+      setUiError(t.searchAuthRequired);
+      return;
+    }
+
     setLoading(true);
     setUiError("");
 
     weatherApi
-      .getWeather(city)
+      .getWeather(city, token)
       .then((data) => setWeather(data))
       .catch((error) => setUiError(error.message || "Unable to load data."))
       .finally(() => setLoading(false));
