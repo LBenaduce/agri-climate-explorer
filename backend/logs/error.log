@@ -1,6 +1,2 @@
-2026-04-21T13:38:20.725Z GET /api/users/me 401 Invalid token
-2026-04-21T13:38:20.727Z GET /api/users/me 401 Invalid token
-2026-04-21T13:38:37.492Z GET /api/weather?city=Santa%20Maria%2C%20RS 404 City not found
-2026-04-21T13:39:44.743Z GET /api/weather?city=Santa%20Maria%2C%20RS 404 City not found
-2026-04-21T13:39:47.082Z GET /api/weather?city=Santa%20Maria%20RS 404 City not found
-2026-04-21T13:39:52.880Z GET /api/weather?city=Santa%20Maria%20Rio%20Grande%20do%20sul 404 City not found
+2026-04-13T15:12:45.470Z GET /api/users/me 401 Invalid token
+2026-04-13T15:12:45.471Z GET /api/users/me 401 Invalid token

@@ -21,6 +21,11 @@ function GlobalCoverageCard({ weather, t }) {
       <div className="card__insight">
         <strong>{city}</strong>, {country}
       </div>
+      {weather?.latitude && weather?.longitude ? (
+        <div className="card__insight">
+          <strong>{t.coordinates}:</strong> {weather.latitude}, {weather.longitude}
+        </div>
+      ) : null}
     </article>
   );
 }

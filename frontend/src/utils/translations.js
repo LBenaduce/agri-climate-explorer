@@ -12,6 +12,7 @@ const translations = {
     searchAuthRequired: "Faça login para pesquisar o clima e salvar locais.",
     loading: "Carregando inteligência climática...",
     temperature: "Temperatura", humidity: "Umidade", rainfall: "Chuva", wind: "Vento", conditions: "Condições",
+    solarRadiation: "Radiação solar", coordinates: "Coordenadas", dataSources: "Fontes de dados",
     agriculturalInsight: "Insight agrícola", saveLocation: "Salvar local",
     developedBy: "AgriClimate Pro • Desenvolvido por Luiz Benaduce © 2026",
     loginTitle: "Entrar", registerTitle: "Criar conta", name: "Nome", email: "E-mail", password: "Senha",
@@ -21,10 +22,11 @@ const translations = {
     savedTitle: "Locais salvos", savedText: "Revise seus registros climáticos salvos e mantenha os locais mais importantes para o seu portfólio.",
     emptySaved: "Ainda não há locais salvos. Pesquise uma cidade e salve pelo painel.", remove: "Remover", language: "Idioma",
     riskScore: "Score de risco agrícola", lowRisk: "Baixo risco", mediumRisk: "Risco moderado", highRisk: "Alto risco",
-    trendTitle: "Tendência climática da semana", mapTitle: "Cobertura global agrícola",
+    trendTitle: "Tendência climática dos últimos 7 dias", mapTitle: "Cobertura global agrícola",
     mapText: "Painel visual para destacar cidades monitoradas no seu portfólio.",
     recommendationsTitle: "Recomendações rápidas", recommendationsPlanting: "Plantio", recommendationsIrrigation: "Irrigação",
-    recommendationsDisease: "Doenças", recommendationsSpraying: "Pulverização", ndviEstimate: "NDVI estimado", dataSource: "Fonte dos dados", coordinates: "Coordenadas", solarRadiation: "Radiação solar"
+    recommendationsDisease: "Doenças", recommendationsSpraying: "Pulverização",
+    ndviTitle: "NDVI satelital", openNasaNdvi: "Abrir NDVI na NASA", lastAvailableDate: "Última data disponível"
   },
   en: {
     home: "Home", dashboard: "Dashboard", saved: "Saved", register: "Register", login: "Login", logout: "Logout",
@@ -39,6 +41,7 @@ const translations = {
     searchAuthRequired: "Please log in to search the weather and save locations.",
     loading: "Loading climate intelligence...",
     temperature: "Temperature", humidity: "Humidity", rainfall: "Rainfall", wind: "Wind", conditions: "Conditions",
+    solarRadiation: "Solar radiation", coordinates: "Coordinates", dataSources: "Data sources",
     agriculturalInsight: "Agricultural insight", saveLocation: "Save location",
     developedBy: "AgriClimate Pro • Developed by Luiz Benaduce © 2026",
     loginTitle: "Login", registerTitle: "Create account", name: "Name", email: "Email", password: "Password",
@@ -48,10 +51,11 @@ const translations = {
     savedTitle: "Saved locations", savedText: "Review your saved climate records and keep the places that matter most for your portfolio demo.",
     emptySaved: "No saved locations yet. Search for a city and save it from the dashboard.", remove: "Remove", language: "Language",
     riskScore: "Agricultural risk score", lowRisk: "Low risk", mediumRisk: "Moderate risk", highRisk: "High risk",
-    trendTitle: "Weekly climate trend", mapTitle: "Global agricultural coverage",
+    trendTitle: "Last 7 days climate trend", mapTitle: "Global agricultural coverage",
     mapText: "Visual panel to highlight monitored cities in your portfolio.",
     recommendationsTitle: "Quick recommendations", recommendationsPlanting: "Planting", recommendationsIrrigation: "Irrigation",
-    recommendationsDisease: "Disease risk", recommendationsSpraying: "Spraying", ndviEstimate: "Estimated NDVI", dataSource: "Data source", coordinates: "Coordinates", solarRadiation: "Solar radiation"
+    recommendationsDisease: "Disease risk", recommendationsSpraying: "Spraying",
+    ndviTitle: "Satellite NDVI", openNasaNdvi: "Open NDVI in NASA", lastAvailableDate: "Last available date"
   },
   es: {
     home: "Inicio", dashboard: "Panel", saved: "Guardados", register: "Registrarse", login: "Entrar", logout: "Salir",
@@ -66,6 +70,7 @@ const translations = {
     searchAuthRequired: "Inicia sesión para consultar el clima y guardar ubicaciones.",
     loading: "Cargando inteligencia climática...",
     temperature: "Temperatura", humidity: "Humedad", rainfall: "Lluvia", wind: "Viento", conditions: "Condiciones",
+    solarRadiation: "Radiación solar", coordinates: "Coordenadas", dataSources: "Fuentes de datos",
     agriculturalInsight: "Insight agrícola", saveLocation: "Guardar ubicación",
     developedBy: "AgriClimate Pro • Desarrollado por Luiz Benaduce © 2026",
     loginTitle: "Entrar", registerTitle: "Crear cuenta", name: "Nombre", email: "Correo electrónico", password: "Contraseña",
@@ -78,7 +83,8 @@ const translations = {
     trendTitle: "Tendencia climática semanal", mapTitle: "Cobertura agrícola global",
     mapText: "Panel visual para destacar las ciudades monitoreadas en tu portafolio.",
     recommendationsTitle: "Recomendaciones rápidas", recommendationsPlanting: "Siembra", recommendationsIrrigation: "Riego",
-    recommendationsDisease: "Enfermedades", recommendationsSpraying: "Pulverización"
+    recommendationsDisease: "Enfermedades", recommendationsSpraying: "Pulverización",
+    ndviTitle: "NDVI satelital", openNasaNdvi: "Abrir NDVI en NASA", lastAvailableDate: "Última fecha disponible"
   },
   fr: {
     home: "Accueil", dashboard: "Tableau de bord", saved: "Enregistrés", register: "Créer un compte", login: "Connexion", logout: "Déconnexion",

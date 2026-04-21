@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const locationSchema = new mongoose.Schema(
   {
@@ -10,17 +10,13 @@ const locationSchema = new mongoose.Schema(
     wind: { type: Number, required: true },
     summary: { type: String, required: true },
     insight: { type: String, required: true },
-    ndviEstimate: { type: Number, default: null },
-    latitude: { type: Number, default: null },
-    longitude: { type: Number, default: null },
-    source: { type: String, default: 'NASA POWER Daily API' },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'user',
-      required: true,
-    },
+      ref: "user",
+      required: true
+    }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('location', locationSchema);
+module.exports = mongoose.model("location", locationSchema);

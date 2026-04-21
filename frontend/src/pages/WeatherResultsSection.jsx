@@ -4,6 +4,7 @@ import RiskScoreCard from "../components/RiskScoreCard";
 import ClimateTrendChart from "../components/ClimateTrendChart";
 import RecommendationsCard from "../components/RecommendationsCard";
 import GlobalCoverageCard from "../components/GlobalCoverageCard";
+import NdviCard from "../components/NdviCard";
 
 function WeatherResultsSection({
   weather,
@@ -34,6 +35,7 @@ function WeatherResultsSection({
             <RiskScoreCard weather={weather} t={t} />
             <ClimateTrendChart weather={weather} t={t} />
             <RecommendationsCard weather={weather} t={t} />
+            <NdviCard weather={weather} t={t} />
             <GlobalCoverageCard weather={weather} t={t} />
           </div>
         </>

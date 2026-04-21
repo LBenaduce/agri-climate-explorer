@@ -1,14 +1,10 @@
-import { translateSummaryAndInsight } from '../utils/weatherTranslations';
-import './WeatherCard.css';
+import { translateSummaryAndInsight } from "../utils/weatherTranslations";
+import "./WeatherCard.css";
 
 function WeatherCard({ weather, isLoggedIn, onSave, t, language }) {
   if (!weather) return null;
 
   const { summary, insight } = translateSummaryAndInsight(weather, language);
-  const ndviLabel = t.ndviEstimate || 'Estimated NDVI';
-  const sourceLabel = t.dataSource || 'Data source';
-  const coordinatesLabel = t.coordinates || 'Coordinates';
-  const solarLabel = t.solarRadiation || 'Solar radiation';
 
   return (
     <article className="card">
@@ -21,16 +17,20 @@ function WeatherCard({ weather, isLoggedIn, onSave, t, language }) {
         <li>{t.humidity}: {weather.humidity}%</li>
         <li>{t.rainfall}: {weather.rainfall} mm</li>
         <li>{t.wind}: {weather.wind} km/h</li>
-        <li>{solarLabel}: {weather.solarRadiation} kWh/m²/day</li>
+        <li>{t.solarRadiation}: {weather.solarRadiation} kWh/m²/day</li>
+        <li>{t.coordinates}: {weather.latitude}, {weather.longitude}</li>
         <li>{t.conditions}: {summary}</li>
-        <li>{ndviLabel}: {weather.ndviEstimate} ({weather.ndviLabel})</li>
-        <li>{coordinatesLabel}: {weather.latitude}, {weather.longitude}</li>
-        <li>{sourceLabel}: {weather.source}</li>
       </ul>
 
       <div className="card__insight">
         <strong>{t.agriculturalInsight}:</strong> {insight}
       </div>
+
+      {weather.source ? (
+        <div className="card__insight">
+          <strong>{t.dataSources}:</strong> {weather.source.climate} + {weather.source.ndvi}
+        </div>
+      ) : null}
 
       {isLoggedIn && (
         <div className="card__actions">

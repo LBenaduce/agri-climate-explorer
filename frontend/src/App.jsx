@@ -136,11 +136,7 @@ function App() {
         rainfall: weather.rainfall,
         wind: weather.wind,
         summary: weather.summary,
-        insight: weather.insight,
-        ndviEstimate: weather.ndviEstimate,
-        latitude: weather.latitude,
-        longitude: weather.longitude,
-        source: weather.source,
+        insight: weather.insight
       })
       .then((item) => setSavedLocations((prev) => [item, ...prev]))
       .catch((error) =>

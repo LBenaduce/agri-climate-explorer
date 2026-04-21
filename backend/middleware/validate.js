@@ -53,18 +53,12 @@ function validateLocation(req, res, next) {
     wind,
     summary,
     insight,
-    ndviEstimate,
-    latitude,
-    longitude,
-    source,
   } = req.body;
 
   const hasValidStrings = [city, country, summary, insight].every((value) => typeof value === 'string' && value.trim());
   const hasValidNumbers = [temperature, humidity, rainfall, wind].every((value) => typeof value === 'number' && Number.isFinite(value));
-  const hasOptionalNumbers = [ndviEstimate, latitude, longitude].every((value) => value === undefined || (typeof value === 'number' && Number.isFinite(value)));
-  const hasOptionalSource = source === undefined || (typeof source === 'string' && source.trim());
 
-  if (!hasValidStrings || !hasValidNumbers || !hasOptionalNumbers || !hasOptionalSource) {
+  if (!hasValidStrings || !hasValidNumbers) {
     return next(new BadRequestError('Invalid location payload'));
   }
 

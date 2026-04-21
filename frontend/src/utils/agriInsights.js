@@ -20,14 +20,18 @@ import {
   MAX_RISK_SCORE,
   MAX_WIND_SCORE,
   MEDIUM_RISK_THRESHOLD,
+  MIN_TREND_TEMPERATURE,
   PLANTING_RAIN_THRESHOLD,
   RAINFALL_WEIGHT,
   SPRAYING_WIND_THRESHOLD,
+  TREND_BASE_RAINFALL,
+  TREND_BASE_TEMPERATURE,
+  TREND_DATA_OFFSETS,
   WIND_WEIGHT,
-} from '../config/agriConstants';
+} from "../config/agriConstants";
 
 export function calculateRisk(weather) {
-  if (!weather) return { score: 0, level: 'low' };
+  if (!weather) return { score: 0, level: "low" };
 
   let score = BASE_RISK_SCORE;
   score += Math.min(weather.humidity || 0, MAX_HUMIDITY_SCORE) * HUMIDITY_WEIGHT;
@@ -47,15 +51,11 @@ export function calculateRisk(weather) {
     score += HIGH_WIND_PENALTY;
   }
 
-  if ((weather.ndviEstimate || 0) < 0.35) {
-    score += 12;
-  }
-
   score = Math.max(0, Math.min(MAX_RISK_SCORE, Math.round(score)));
 
-  let level = 'low';
-  if (score >= HIGH_RISK_THRESHOLD) level = 'high';
-  else if (score >= MEDIUM_RISK_THRESHOLD) level = 'medium';
+  let level = "low";
+  if (score >= HIGH_RISK_THRESHOLD) level = "high";
+  else if (score >= MEDIUM_RISK_THRESHOLD) level = "medium";
 
   return { score, level };
 }
@@ -67,35 +67,46 @@ export function getRecommendations(weather) {
 
   const planting =
     weather.rainfall > PLANTING_RAIN_THRESHOLD
-      ? 'Delay sensitive field operations until rainfall decreases.'
+      ? "Delay sensitive field operations until rainfall decreases."
       : weather.temperature >= IDEAL_TEMPERATURE_MIN && weather.temperature <= IDEAL_TEMPERATURE_MAX
-        ? 'Good window for many planting activities.'
-        : 'Use crop-specific timing before planting.';
+        ? "Good window for many planting activities."
+        : "Use crop-specific timing before planting.";
 
   const irrigation =
     weather.rainfall > IRRIGATION_RAIN_THRESHOLD
-      ? 'Irrigation demand may be reduced in the short term.'
-      : weather.humidity < LOW_HUMIDITY_THRESHOLD || (weather.ndviEstimate || 0) < 0.4
-        ? 'Monitor soil moisture and consider supplemental irrigation.'
-        : 'Maintain regular irrigation monitoring.';
+      ? "Irrigation demand may be reduced in the short term."
+      : weather.humidity < LOW_HUMIDITY_THRESHOLD
+        ? "Monitor soil moisture and consider supplemental irrigation."
+        : "Maintain regular irrigation monitoring.";
 
   const disease =
     weather.humidity > HIGH_HUMIDITY_THRESHOLD
-      ? 'Higher fungal pressure is possible. Increase monitoring.'
-      : 'Disease pressure appears more moderate right now.';
+      ? "Higher fungal pressure is possible. Increase monitoring."
+      : "Disease pressure appears more moderate right now.";
 
   const spraying =
     weather.wind > SPRAYING_WIND_THRESHOLD
-      ? 'Avoid spraying in stronger wind conditions.'
-      : 'Spraying conditions look more favorable.';
+      ? "Avoid spraying in stronger wind conditions."
+      : "Spraying conditions look more favorable.";
 
   return { planting, irrigation, disease, spraying };
 }
 
 export function buildTrendData(weather) {
   if (weather?.trend?.length) {
-    return weather.trend;
+    return weather.trend.map((item) => ({
+      ...item,
+      temp: Math.max(MIN_TREND_TEMPERATURE, item.temp),
+      rain: Math.max(0, item.rain),
+    }));
   }
 
-  return [];
+  const baseTemp = weather?.temperature || TREND_BASE_TEMPERATURE;
+  const baseRain = weather?.rainfall || TREND_BASE_RAINFALL;
+
+  return TREND_DATA_OFFSETS.map(({ day, tempOffset, rainOffset }) => ({
+    day,
+    temp: Math.max(MIN_TREND_TEMPERATURE, baseTemp + tempOffset),
+    rain: Math.max(0, baseRain + rainOffset),
+  }));
 }

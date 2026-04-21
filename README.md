@@ -73,27 +73,6 @@ VITE_API_URL=http://localhost:3001
 - The frontend expects the backend to run on port `3001` by default.
 
 
-## NASA POWER integration
+## NASA POWER + NDVI update
 
-This version uses:
-- NASA POWER Daily API for agroclimatology variables
-- Open-Meteo Geocoding API to resolve city names into latitude and longitude
-- an estimated NDVI-style vegetation vigor score derived from recent climate conditions
-
-### Backend
-Run the backend from `/backend`:
-
-```bash
-npm install
-npm run dev
-```
-
-### Frontend
-Run the frontend from `/frontend`:
-
-```bash
-npm install
-npm run dev
-```
-
-Search for a city while logged in. The app will fetch the most recent 7-day NASA POWER daily series and return temperature, humidity, rainfall, wind, solar radiation, trend data, and an estimated NDVI proxy.
+This version uses NASA POWER daily agroclimatology for numeric climate data and adds a NASA Earthdata Worldview NDVI viewer link for real satellite vegetation inspection by searched location.
