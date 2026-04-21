@@ -1,0 +1,16 @@
+.loader {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted);
+}
+
+.loader::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}

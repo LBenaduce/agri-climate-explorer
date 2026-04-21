@@ -1,0 +1,35 @@
+.card,
+.saved-card {
+  padding: 22px;
+}
+
+.card__title,
+.saved-card__title {
+  margin: 0 0 12px;
+  font-size: 24px;
+}
+
+.card__meta,
+.saved-card__meta {
+  display: grid;
+  gap: 10px;
+  color: var(--muted);
+  margin: 0;
+  padding-left: 20px;
+}
+
+.card__insight {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(103, 210, 143, 0.1);
+  color: #d8ffe7;
+}
+
+.card__actions,
+.saved-card__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}

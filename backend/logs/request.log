@@ -1,0 +1,16 @@
+2026-04-21T13:38:20.727Z GET /api/users/me 401 4ms
+2026-04-21T13:38:20.727Z GET /api/users/me 401 2ms
+2026-04-21T13:38:34.359Z POST /api/signin 200 126ms
+2026-04-21T13:38:34.371Z GET /api/users/me 200 4ms
+2026-04-21T13:38:34.373Z GET /api/locations 200 5ms
+2026-04-21T13:38:37.493Z GET /api/weather?city=Santa%20Maria%2C%20RS 404 1285ms
+2026-04-21T13:38:47.800Z GET /api/weather?city=Santa%20Maria 200 2296ms
+2026-04-21T13:39:02.403Z GET /api/weather?city=Dallas 200 1994ms
+2026-04-21T13:39:44.746Z GET /api/weather?city=Santa%20Maria%2C%20RS 404 1056ms
+2026-04-21T13:39:47.083Z GET /api/weather?city=Santa%20Maria%20RS 404 247ms
+2026-04-21T13:39:52.882Z GET /api/weather?city=Santa%20Maria%20Rio%20Grande%20do%20sul 404 1101ms
+2026-04-21T13:39:57.320Z GET /api/weather?city=Santa%20Maria 304 1019ms
+2026-04-21T13:40:08.252Z GET /api/weather?city=Cruz%20Alta 200 2233ms
+2026-04-21T13:40:46.442Z GET /api/weather?city=Porto%20Alegre 200 2194ms
+2026-04-21T13:40:55.658Z GET /api/weather?city=Rivera 200 1947ms
+2026-04-21T13:41:11.428Z GET /api/weather?city=Salvador 200 2199ms

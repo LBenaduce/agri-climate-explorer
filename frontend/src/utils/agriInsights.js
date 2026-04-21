@@ -1,0 +1,101 @@
+import {
+  BASE_RISK_SCORE,
+  EMPTY_RECOMMENDATIONS,
+  EXTREME_TEMPERATURE_HIGH,
+  EXTREME_TEMPERATURE_LOW,
+  EXTREME_TEMPERATURE_PENALTY,
+  HIGH_HUMIDITY_RAIN_PENALTY,
+  HIGH_HUMIDITY_THRESHOLD,
+  HIGH_RAINFALL_THRESHOLD,
+  HIGH_RISK_THRESHOLD,
+  HIGH_WIND_PENALTY,
+  HIGH_WIND_THRESHOLD,
+  HUMIDITY_WEIGHT,
+  IDEAL_TEMPERATURE_MAX,
+  IDEAL_TEMPERATURE_MIN,
+  IRRIGATION_RAIN_THRESHOLD,
+  LOW_HUMIDITY_THRESHOLD,
+  MAX_HUMIDITY_SCORE,
+  MAX_RAINFALL_SCORE,
+  MAX_RISK_SCORE,
+  MAX_WIND_SCORE,
+  MEDIUM_RISK_THRESHOLD,
+  PLANTING_RAIN_THRESHOLD,
+  RAINFALL_WEIGHT,
+  SPRAYING_WIND_THRESHOLD,
+  WIND_WEIGHT,
+} from '../config/agriConstants';
+
+export function calculateRisk(weather) {
+  if (!weather) return { score: 0, level: 'low' };
+
+  let score = BASE_RISK_SCORE;
+  score += Math.min(weather.humidity || 0, MAX_HUMIDITY_SCORE) * HUMIDITY_WEIGHT;
+  score += Math.min(weather.rainfall || 0, MAX_RAINFALL_SCORE) * RAINFALL_WEIGHT;
+  score += Math.min(weather.wind || 0, MAX_WIND_SCORE) * WIND_WEIGHT;
+
+  const temperature = weather.temperature || 0;
+  if (temperature < EXTREME_TEMPERATURE_LOW || temperature > EXTREME_TEMPERATURE_HIGH) {
+    score += EXTREME_TEMPERATURE_PENALTY;
+  }
+
+  if ((weather.humidity || 0) > HIGH_HUMIDITY_THRESHOLD && (weather.rainfall || 0) > HIGH_RAINFALL_THRESHOLD) {
+    score += HIGH_HUMIDITY_RAIN_PENALTY;
+  }
+
+  if ((weather.wind || 0) > HIGH_WIND_THRESHOLD) {
+    score += HIGH_WIND_PENALTY;
+  }
+
+  if ((weather.ndviEstimate || 0) < 0.35) {
+    score += 12;
+  }
+
+  score = Math.max(0, Math.min(MAX_RISK_SCORE, Math.round(score)));
+
+  let level = 'low';
+  if (score >= HIGH_RISK_THRESHOLD) level = 'high';
+  else if (score >= MEDIUM_RISK_THRESHOLD) level = 'medium';
+
+  return { score, level };
+}
+
+export function getRecommendations(weather) {
+  if (!weather) {
+    return EMPTY_RECOMMENDATIONS;
+  }
+
+  const planting =
+    weather.rainfall > PLANTING_RAIN_THRESHOLD
+      ? 'Delay sensitive field operations until rainfall decreases.'
+      : weather.temperature >= IDEAL_TEMPERATURE_MIN && weather.temperature <= IDEAL_TEMPERATURE_MAX
+        ? 'Good window for many planting activities.'
+        : 'Use crop-specific timing before planting.';
+
+  const irrigation =
+    weather.rainfall > IRRIGATION_RAIN_THRESHOLD
+      ? 'Irrigation demand may be reduced in the short term.'
+      : weather.humidity < LOW_HUMIDITY_THRESHOLD || (weather.ndviEstimate || 0) < 0.4
+        ? 'Monitor soil moisture and consider supplemental irrigation.'
+        : 'Maintain regular irrigation monitoring.';
+
+  const disease =
+    weather.humidity > HIGH_HUMIDITY_THRESHOLD
+      ? 'Higher fungal pressure is possible. Increase monitoring.'
+      : 'Disease pressure appears more moderate right now.';
+
+  const spraying =
+    weather.wind > SPRAYING_WIND_THRESHOLD
+      ? 'Avoid spraying in stronger wind conditions.'
+      : 'Spraying conditions look more favorable.';
+
+  return { planting, irrigation, disease, spraying };
+}
+
+export function buildTrendData(weather) {
+  if (weather?.trend?.length) {
+    return weather.trend;
+  }
+
+  return [];
+}

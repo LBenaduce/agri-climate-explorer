@@ -1,0 +1,17 @@
+.coverage-card__text {
+  margin-bottom: 12px;
+}
+
+.coverage-card__map {
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.04);
+}
+
+.coverage-card__svg {
+  width: 100%;
+  height: auto;
+  fill: rgba(255,255,255,.12);
+  stroke: rgba(255,255,255,.09);
+  stroke-width: 2;
+}

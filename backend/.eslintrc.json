@@ -1,0 +1,14 @@
+{
+  "env": {
+    "node": true,
+    "es2021": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
+  "rules": {
+    "no-underscore-dangle": "off",
+    "no-warning-comments": ["warn", { "terms": ["eslint-disable", "eslint-disable-line", "eslint-disable-next-line"] }]
+  }
+}
