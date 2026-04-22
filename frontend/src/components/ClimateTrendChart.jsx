@@ -10,7 +10,7 @@ function ClimateTrendChart({ weather, t }) {
 
       <div className="trend-card__bars">
         {data.map((item) => (
-          <div key={item.date || item.day} className="trend-card__column">
+          <div key={item.day} className="trend-card__column">
             <div
               className="trend-card__bar trend-card__bar_temp"
               style={{ height: `${Math.max(18, item.temp * 3)}px` }}

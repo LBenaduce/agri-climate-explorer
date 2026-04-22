@@ -8,7 +8,12 @@ const {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validateSignup(req, res, next) {
-  const { name, email, password } = req.body;
+  const {
+    name,
+    email,
+    password,
+    marketingConsent,
+  } = req.body;
 
   if (
     typeof name !== 'string'
@@ -24,6 +29,10 @@ function validateSignup(req, res, next) {
 
   if (typeof password !== 'string' || password.length < PASSWORD_MIN_LENGTH) {
     return next(new BadRequestError(`Password must be at least ${PASSWORD_MIN_LENGTH} characters`));
+  }
+
+  if (marketingConsent !== undefined && typeof marketingConsent !== 'boolean') {
+    return next(new BadRequestError('Marketing consent must be true or false'));
   }
 
   return next();

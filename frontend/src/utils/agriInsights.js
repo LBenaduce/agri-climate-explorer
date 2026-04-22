@@ -93,14 +93,6 @@ export function getRecommendations(weather) {
 }
 
 export function buildTrendData(weather) {
-  if (weather?.trend?.length) {
-    return weather.trend.map((item) => ({
-      ...item,
-      temp: Math.max(MIN_TREND_TEMPERATURE, item.temp),
-      rain: Math.max(0, item.rain),
-    }));
-  }
-
   const baseTemp = weather?.temperature || TREND_BASE_TEMPERATURE;
   const baseRain = weather?.rainfall || TREND_BASE_RAINFALL;
 

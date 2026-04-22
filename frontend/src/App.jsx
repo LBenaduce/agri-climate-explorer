@@ -23,11 +23,14 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [uiError, setUiError] = useState("");
   const [activeModal, setActiveModal] = useState("");
-  const [language, setLanguage] = useState(
-    localStorage.getItem("language") || "pt"
-  );
 
-  const t = translations[language];
+  const [language, setLanguage] = useState(() => {
+    const savedLanguage = localStorage.getItem("language");
+    const browserLanguage = navigator.language.split("-")[0];
+    return savedLanguage || browserLanguage || "en";
+  });
+
+  const t = translations[language] || translations.en;
   const isLoggedIn = Boolean(currentUser);
 
   useEffect(() => {
@@ -52,13 +55,16 @@ function App() {
 
   function closeModal() {
     setActiveModal("");
+    setUiError("");
   }
 
   function openLogin() {
+    setUiError("");
     setActiveModal("login");
   }
 
   function openRegister() {
+    setUiError("");
     setActiveModal("register");
   }
 
@@ -72,19 +78,26 @@ function App() {
 
     setLoading(true);
     setUiError("");
+    setWeather(null);
 
     weatherApi
       .getWeather(city, token)
-      .then((data) => setWeather(data))
-      .catch((error) => setUiError(error.message || "Unable to load data."))
+      .then((data) => {
+        setUiError("");
+        setWeather(data);
+      })
+      .catch((error) => {
+        setWeather(null);
+        setUiError(error.message || "Unable to load data.");
+      })
       .finally(() => setLoading(false));
   }
 
-  function handleRegister({ name, email, password }) {
+  function handleRegister({ name, email, password, marketingConsent }) {
     setUiError("");
 
     authApi
-      .register({ name, email, password })
+      .register({ name, email, password, marketingConsent })
       .then(() => authApi.login({ email, password }))
       .then(({ token }) => {
         localStorage.setItem("jwt", token);
@@ -92,9 +105,12 @@ function App() {
       })
       .then((user) => {
         setCurrentUser(user);
+        setSavedLocations([]);
         closeModal();
       })
-      .catch((error) => setUiError(error.message || "Registration failed."));
+      .catch((error) => {
+        setUiError(error.message || "Registration failed.");
+      });
   }
 
   function handleLogin({ email, password }) {
@@ -106,7 +122,7 @@ function App() {
         localStorage.setItem("jwt", token);
         return Promise.all([
           authApi.getProfile(token),
-          locationsApi.getSavedLocations(token)
+          locationsApi.getSavedLocations(token),
         ]);
       })
       .then(([user, locations]) => {
@@ -114,13 +130,17 @@ function App() {
         setSavedLocations(locations);
         closeModal();
       })
-      .catch((error) => setUiError(error.message || "Login failed."));
+      .catch((error) => {
+        setUiError(error.message || "Login failed.");
+      });
   }
 
   function handleLogout() {
     localStorage.removeItem("jwt");
     setCurrentUser(null);
     setSavedLocations([]);
+    setWeather(null);
+    setUiError("");
   }
 
   function handleSaveLocation() {
@@ -136,12 +156,15 @@ function App() {
         rainfall: weather.rainfall,
         wind: weather.wind,
         summary: weather.summary,
-        insight: weather.insight
+        insight: weather.insight,
       })
-      .then((item) => setSavedLocations((prev) => [item, ...prev]))
-      .catch((error) =>
-        setUiError(error.message || "Could not save location.")
-      );
+      .then((item) => {
+        setSavedLocations((prev) => [item, ...prev]);
+        setUiError("");
+      })
+      .catch((error) => {
+        setUiError(error.message || "Could not save location.");
+      });
   }
 
   function handleDeleteLocation(id) {
@@ -152,10 +175,11 @@ function App() {
       .deleteLocation(token, id)
       .then(() => {
         setSavedLocations((prev) => prev.filter((item) => item._id !== id));
+        setUiError("");
       })
-      .catch((error) =>
-        setUiError(error.message || "Could not delete location.")
-      );
+      .catch((error) => {
+        setUiError(error.message || "Could not delete location.");
+      });
   }
 
   return (

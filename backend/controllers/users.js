@@ -4,6 +4,7 @@ const User = require('../models/user');
 const ConflictError = require('../errors/ConflictError');
 const NotFoundError = require('../errors/NotFoundError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
+const { sendNewRegistrationNotification } = require('../utils/email');
 const {
   DUPLICATE_EMAIL_MESSAGE,
   INVALID_AUTH_MESSAGE,
@@ -13,16 +14,31 @@ const {
 const { JWT_SECRET = 'dev-secret' } = process.env;
 
 module.exports.register = (req, res, next) => {
-  const { name, email, password } = req.body;
+  const {
+    name,
+    email,
+    password,
+    marketingConsent = false,
+  } = req.body;
 
   bcrypt
     .hash(password, 10)
-    .then((hash) => User.create({ name, email, password: hash }))
+    .then((hash) => User.create({
+      name,
+      email,
+      password: hash,
+      marketingConsent,
+    }))
     .then((user) => {
+      sendNewRegistrationNotification(user).catch((error) => {
+        console.error('Registration email notification failed:', error.message);
+      });
+
       res.status(201).send({
         _id: user._id,
         name: user.name,
         email: user.email,
+        marketingConsent: user.marketingConsent,
       });
     })
     .catch((err) => {
