@@ -1,6 +1,6 @@
 const { INVALID_ID_MESSAGE } = require('../utils/constants');
 
-function errorHandler(err, req, res) {
+function errorHandler(err, req, res, next) {
   if (err.name === 'CastError') {
     return res.status(400).send({ message: INVALID_ID_MESSAGE });
   }
@@ -10,7 +10,8 @@ function errorHandler(err, req, res) {
   }
 
   const statusCode = err.statusCode || 500;
-  const message = statusCode === 500 ? 'Internal server error' : err.message;
+  const message =
+    statusCode === 500 ? 'Internal server error' : err.message;
 
   return res.status(statusCode).send({ message });
 }
