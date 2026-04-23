@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const BASE_URL =
+  import.meta.env.VITE_API_URL || "https://agri-climate-backend.onrender.com/api";
 
 function handleResponse(response) {
   if (!response.ok) {
@@ -6,7 +7,9 @@ function handleResponse(response) {
       .json()
       .catch(() => ({}))
       .then((data) => {
-        throw new Error(data.message || `Request failed with status ${response.status}`);
+        throw new Error(
+          data.message || `Request failed with status ${response.status}`
+        );
       });
   }
 
@@ -15,23 +18,25 @@ function handleResponse(response) {
 
 export const weatherApi = {
   getWeather(city) {
-    return fetch(`${BASE_URL}/weather?city=${encodeURIComponent(city)}`).then(handleResponse);
+    return fetch(
+      `${BASE_URL}/weather?city=${encodeURIComponent(city)}`
+    ).then(handleResponse);
   },
 };
 
 export const authApi = {
   register(data) {
     return fetch(`${BASE_URL}/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     }).then(handleResponse);
   },
 
   login(data) {
     return fetch(`${BASE_URL}/signin`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     }).then(handleResponse);
   },
@@ -56,9 +61,9 @@ export const locationsApi = {
 
   saveLocation(token, payload) {
     return fetch(`${BASE_URL}/locations`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
@@ -67,7 +72,7 @@ export const locationsApi = {
 
   deleteLocation(token, id) {
     return fetch(`${BASE_URL}/locations/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
