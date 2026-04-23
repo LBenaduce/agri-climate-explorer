@@ -152,3 +152,7 @@
 2026-04-22T17:21:58.183Z GET /api/weather?city=Santa%20Maria%2C%20RS%2C%20Brasil 200 2163ms
 2026-04-22T17:22:00.976Z GET /api/weather?city=Santa%20Maria%2C%20RS 404 265ms
 2026-04-22T17:22:05.210Z GET /api/weather?city=Santa%20Maria%2C%20RS%2C%20BR 200 1164ms
+2026-04-23T13:17:26.887Z GET /api/users/me 304 8ms
+2026-04-23T13:17:26.888Z GET /api/users/me 304 16ms
+2026-04-23T13:17:26.901Z GET /api/locations 304 9ms
+2026-04-23T13:17:26.901Z GET /api/locations 304 8ms
