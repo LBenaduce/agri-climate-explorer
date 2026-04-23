@@ -13,47 +13,54 @@ const {
 
 const { JWT_SECRET = 'dev-secret' } = process.env;
 
-module.exports.register = (req, res, next) => {
-  const {
-    name,
-    email,
-    password,
-    marketingConsent = false,
-  } = req.body;
-
-  bcrypt
-    .hash(password, 10)
-    .then((hash) => User.create({
+module.exports.register = async (req, res, next) => {
+  try {
+    const {
       name,
       email,
-      password: hash,
+      password,
+      marketingConsent = false,
+    } = req.body;
+
+    const normalizedName = String(name).trim();
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name: normalizedName,
+      email: normalizedEmail,
+      password: passwordHash,
       marketingConsent,
-    }))
-    .then((user) => {
-      sendNewRegistrationNotification(user).catch((error) => {
-        console.error('Registration email notification failed:', error.message);
-      });
-
-      res.status(201).send({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        marketingConsent: user.marketingConsent,
-      });
-    })
-    .catch((err) => {
-      if (err.code === 11000) {
-        return next(new ConflictError(DUPLICATE_EMAIL_MESSAGE));
-      }
-
-      return next(err);
     });
+
+    try {
+      await sendNewRegistrationNotification(user);
+    } catch (error) {
+      console.error('Registration email notification failed:', error.message);
+    }
+
+    return res.status(201).send({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      marketingConsent: user.marketingConsent,
+    });
+  } catch (err) {
+    console.error('Registration error:', err);
+
+    if (err.code === 11000) {
+      return next(new ConflictError(DUPLICATE_EMAIL_MESSAGE));
+    }
+
+    return next(err);
+  }
 };
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
+  const normalizedEmail = String(email).trim().toLowerCase();
 
-  User.findOne({ email }).select('+password')
+  User.findOne({ email: normalizedEmail }).select('+password')
     .then((user) => {
       if (!user) {
         throw new UnauthorizedError(INVALID_AUTH_MESSAGE);

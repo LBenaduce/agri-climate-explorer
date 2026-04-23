@@ -69,19 +69,12 @@ function App() {
   }
 
   function handleWeatherSearch(city) {
-    const token = localStorage.getItem("jwt");
-
-    if (!token) {
-      setUiError(t.searchAuthRequired);
-      return;
-    }
-
     setLoading(true);
     setUiError("");
     setWeather(null);
 
     weatherApi
-      .getWeather(city, token)
+      .getWeather(city)
       .then((data) => {
         setUiError("");
         setWeather(data);

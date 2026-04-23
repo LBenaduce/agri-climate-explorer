@@ -6,9 +6,9 @@ const weatherRoutes = require('./weather');
 const locationsRoutes = require('./locations');
 
 router.use(authRoutes);
+router.use(weatherRoutes);
 router.use(auth);
 router.use(usersRoutes);
-router.use(weatherRoutes);
 router.use(locationsRoutes);
 
 module.exports = router;
