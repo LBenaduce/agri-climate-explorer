@@ -1,7 +1,7 @@
 import { getRecommendations } from "../utils/agriInsights";
 
 function RecommendationsCard({ weather, t }) {
-  const items = getRecommendations(weather);
+  const items = getRecommendations(weather, t);
 
   return (
     <article className="card">

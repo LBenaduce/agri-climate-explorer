@@ -32,7 +32,7 @@ function WeatherResultsSection({
           />
           <div className="grid startup-grid">
             <RiskScoreCard weather={weather} t={t} />
-            <ClimateTrendChart weather={weather} t={t} />
+            <ClimateTrendChart weather={weather} t={t} language={language} />
             <RecommendationsCard weather={weather} t={t} />
             <GlobalCoverageCard weather={weather} t={t} />
           </div>

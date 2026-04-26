@@ -60,34 +60,39 @@ export function calculateRisk(weather) {
   return { score, level };
 }
 
-export function getRecommendations(weather) {
+export function getRecommendations(weather, t) {
   if (!weather) {
-    return EMPTY_RECOMMENDATIONS;
+    return {
+      planting: t?.recommendationFallback || EMPTY_RECOMMENDATIONS.planting,
+      irrigation: t?.recommendationFallback || EMPTY_RECOMMENDATIONS.irrigation,
+      disease: t?.recommendationFallback || EMPTY_RECOMMENDATIONS.disease,
+      spraying: t?.recommendationFallback || EMPTY_RECOMMENDATIONS.spraying,
+    };
   }
 
   const planting =
     weather.rainfall > PLANTING_RAIN_THRESHOLD
-      ? "Delay sensitive field operations until rainfall decreases."
+      ? t?.plantingDelay || "Delay sensitive field operations until rainfall decreases."
       : weather.temperature >= IDEAL_TEMPERATURE_MIN && weather.temperature <= IDEAL_TEMPERATURE_MAX
-        ? "Good window for many planting activities."
-        : "Use crop-specific timing before planting.";
+        ? t?.plantingGood || "Good window for many planting activities."
+        : t?.plantingCareful || "Use crop-specific timing before planting.";
 
   const irrigation =
     weather.rainfall > IRRIGATION_RAIN_THRESHOLD
-      ? "Irrigation demand may be reduced in the short term."
+      ? t?.irrigationReduced || "Irrigation demand may be reduced in the short term."
       : weather.humidity < LOW_HUMIDITY_THRESHOLD
-        ? "Monitor soil moisture and consider supplemental irrigation."
-        : "Maintain regular irrigation monitoring.";
+        ? t?.irrigationMonitor || "Monitor soil moisture and consider supplemental irrigation."
+        : t?.irrigationRegular || "Maintain regular irrigation monitoring.";
 
   const disease =
     weather.humidity > HIGH_HUMIDITY_THRESHOLD
-      ? "Higher fungal pressure is possible. Increase monitoring."
-      : "Disease pressure appears more moderate right now.";
+      ? t?.diseaseHigh || "Higher fungal pressure is possible. Increase monitoring."
+      : t?.diseaseModerate || "Disease pressure appears more moderate right now.";
 
   const spraying =
     weather.wind > SPRAYING_WIND_THRESHOLD
-      ? "Avoid spraying in stronger wind conditions."
-      : "Spraying conditions look more favorable.";
+      ? t?.sprayingAvoid || "Avoid spraying in stronger wind conditions."
+      : t?.sprayingGood || "Spraying conditions look more favorable.";
 
   return { planting, irrigation, disease, spraying };
 }

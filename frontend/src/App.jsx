@@ -81,7 +81,7 @@ function App() {
       })
       .catch((error) => {
         setWeather(null);
-        setUiError(error.message || "Unable to load data.");
+        setUiError(error.message || t.loadError || "Unable to load data.");
       })
       .finally(() => setLoading(false));
   }
@@ -102,7 +102,7 @@ function App() {
         closeModal();
       })
       .catch((error) => {
-        setUiError(error.message || "Registration failed.");
+        setUiError(error.message || t.registrationFailed || "Registration failed.");
       });
   }
 
@@ -124,7 +124,7 @@ function App() {
         closeModal();
       })
       .catch((error) => {
-        setUiError(error.message || "Login failed.");
+        setUiError(error.message || t.loginFailed || "Login failed.");
       });
   }
 
@@ -156,7 +156,7 @@ function App() {
         setUiError("");
       })
       .catch((error) => {
-        setUiError(error.message || "Could not save location.");
+        setUiError(error.message || t.saveFailed || "Could not save location.");
       });
   }
 
@@ -171,7 +171,7 @@ function App() {
         setUiError("");
       })
       .catch((error) => {
-        setUiError(error.message || "Could not delete location.");
+        setUiError(error.message || t.deleteFailed || "Could not delete location.");
       });
   }
 
