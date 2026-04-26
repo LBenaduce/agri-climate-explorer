@@ -1,48 +1,42 @@
 const nodemailer = require('nodemailer');
 
-const {
-  EMAIL_HOST = 'smtp.gmail.com',
-  EMAIL_PORT = '587',
-  EMAIL_USER = '',
-  EMAIL_PASS = '',
-  ADMIN_NOTIFY_EMAIL = 'cabrasraceteam@gmail.com',
-} = process.env;
+function createTransporter() {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.warn('Email credentials missing');
+    return null;
+  }
 
-const isEmailConfigured = Boolean(EMAIL_USER && EMAIL_PASS && ADMIN_NOTIFY_EMAIL);
-
-let transporter = null;
-
-if (isEmailConfigured) {
-  transporter = nodemailer.createTransport({
-    host: EMAIL_HOST,
-    port: Number(EMAIL_PORT),
-    secure: Number(EMAIL_PORT) === 465,
+  return nodemailer.createTransport({
+    service: 'gmail',
     auth: {
-      user: EMAIL_USER,
-      pass: EMAIL_PASS,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 }
 
-function sendNewRegistrationNotification(user) {
-  if (!transporter) {
-    return Promise.resolve({ skipped: true, reason: 'Email is not configured' });
-  }
+async function sendNewRegistrationNotification(user) {
+  const transporter = createTransporter();
 
-  const consentText = user.marketingConsent ? 'Yes' : 'No';
+  if (!transporter) return;
 
-  return transporter.sendMail({
-    from: `"AgriClimate Pro" <${EMAIL_USER}>`,
-    to: ADMIN_NOTIFY_EMAIL,
-    subject: 'New user registration on AgriClimate Pro',
-    text: [
-      'A new user just registered on the website.',
-      '',
-      `Name: ${user.name}`,
-      `Email: ${user.email}`,
-      `Marketing consent: ${consentText}`,
-      `Registered at: ${new Date().toISOString()}`,
-    ].join('\n'),
+  const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
+
+  await transporter.sendMail({
+    from: `"AgriClimate Pro" <${process.env.EMAIL_USER}>`,
+    to: adminEmail,
+    subject: '🌱 New User Registered - AgriClimate Pro',
+    text: `
+New user registered:
+
+Name: ${user.name || 'Not provided'}
+Email: ${user.email}
+Language: ${user.preferredLanguage || 'Not provided'}
+Marketing: ${user.marketingConsent ? 'Yes' : 'No'}
+
+User ID: ${user._id}
+Date: ${new Date().toISOString()}
+    `,
   });
 }
 
