@@ -257,44 +257,127 @@ async function getOpenMeteoWeather(latitude, longitude) {
     forecastMinTemp: Number(daily.temperature_2m_min?.[0] ?? current.temperature_2m ?? 0),
     evapotranspiration: Number(daily.et0_fao_evapotranspiration?.[0] ?? 0),
   };
+
 }
 
-function buildInsight(weather) {
+const SUPPORTED_LANGUAGES = ['en', 'pt', 'es', 'fr', 'de', 'it', 'ru', 'zh', 'ja', 'ar', 'hi'];
+
+const localizedText = {
+  en: {
+    rainLikely: 'Rain likely',
+    mostlyCloudy: 'Mostly cloudy',
+    windy: 'Windy',
+    partlyCloudy: 'Partly cloudy',
+    wetHeadline: 'Wet conditions are likely over the next 24 hours, which may slow machinery access and raise fungal pressure.',
+    wetAction: 'Avoid spraying or harvesting during the wettest window and review drainage-sensitive fields.',
+    waterStressHeadline: 'Moisture loss is elevated relative to rainfall, suggesting rising short-term water stress risk.',
+    waterStressAction: 'Check irrigation timing, soil moisture, and young plants with shallow root systems.',
+    diseaseHeadline: 'Warm and humid weather can favor foliar disease development in sensitive crops.',
+    diseaseAction: 'Increase scouting frequency for fungal symptoms and avoid creating extra canopy humidity.',
+    strongWindHeadline: 'Strong wind may reduce spray accuracy and increase lodging or mechanical stress in taller crops.',
+    strongWindAction: 'Postpone spraying and inspect exposed fields, trellised crops, and windbreaks.',
+    moderateWindHeadline: 'Moderate wind may still affect pesticide drift and application uniformity.',
+    moderateWindAction: 'Use caution with spraying and verify nozzle setup and field direction.',
+    heatHeadline: 'Heat stress risk is rising for crops, livestock, and recently transplanted seedlings.',
+    heatAction: 'Prioritize irrigation, shade, and field work in cooler hours where possible.',
+    coldHeadline: 'Cool overnight temperatures may slow growth and increase stress in cold-sensitive crops.',
+    coldAction: 'Monitor vulnerable crops and protect nurseries, seedlings, and high-value horticulture.',
+    manageableHeadline: 'Current conditions look relatively manageable for routine field operations in many cropping systems.',
+    manageableAction: 'Keep monitoring local forecasts, field trafficability, and crop-specific thresholds before major operations.',
+  },
+  pt: {
+    rainLikely: 'Chuva provável',
+    mostlyCloudy: 'Predominantemente nublado',
+    windy: 'Ventoso',
+    partlyCloudy: 'Parcialmente nublado',
+    wetHeadline: 'Condições úmidas são prováveis nas próximas 24 horas, podendo dificultar o acesso de máquinas e aumentar a pressão de fungos.',
+    wetAction: 'Evite pulverizar ou colher na janela mais úmida e revise áreas sensíveis à drenagem.',
+    waterStressHeadline: 'A perda de umidade está elevada em relação à chuva, indicando maior risco de estresse hídrico no curto prazo.',
+    waterStressAction: 'Verifique o manejo da irrigação, a umidade do solo e plantas jovens com raízes rasas.',
+    diseaseHeadline: 'Clima quente e úmido pode favorecer doenças foliares em culturas sensíveis.',
+    diseaseAction: 'Aumente a frequência de monitoramento para sintomas fúngicos e evite elevar a umidade do dossel.',
+    strongWindHeadline: 'Vento forte pode reduzir a precisão da pulverização e aumentar estresse mecânico em culturas mais altas.',
+    strongWindAction: 'Adie pulverizações e inspecione áreas expostas, culturas tutoradas e quebra-ventos.',
+    moderateWindHeadline: 'Vento moderado ainda pode afetar deriva de defensivos e uniformidade de aplicação.',
+    moderateWindAction: 'Tenha cautela com pulverizações e verifique bicos, pressão e direção do vento.',
+    heatHeadline: 'O risco de estresse por calor está aumentando para culturas, animais e mudas recém-transplantadas.',
+    heatAction: 'Priorize irrigação, sombra e trabalhos de campo em horários mais frescos quando possível.',
+    coldHeadline: 'Temperaturas baixas durante a noite podem desacelerar o crescimento e aumentar estresse em culturas sensíveis ao frio.',
+    coldAction: 'Monitore culturas vulneráveis e proteja viveiros, mudas e horticultura de alto valor.',
+    manageableHeadline: 'As condições atuais parecem relativamente manejáveis para operações de rotina em muitos sistemas de cultivo.',
+    manageableAction: 'Continue monitorando previsões locais, trafegabilidade do solo e limites específicos da cultura antes de operações importantes.',
+  },
+  es: {
+    rainLikely: 'Lluvia probable', mostlyCloudy: 'Mayormente nublado', windy: 'Ventoso', partlyCloudy: 'Parcialmente nublado',
+    wetHeadline: 'Es probable que haya condiciones húmedas en las próximas 24 horas, lo que puede retrasar el acceso de maquinaria y aumentar la presión fúngica.',
+    wetAction: 'Evita pulverizar o cosechar durante la ventana más húmeda y revisa los campos sensibles al drenaje.',
+    waterStressHeadline: 'La pérdida de humedad es elevada respecto a la lluvia, lo que sugiere mayor riesgo de estrés hídrico a corto plazo.',
+    waterStressAction: 'Revisa el riego, la humedad del suelo y las plantas jóvenes con raíces superficiales.',
+    diseaseHeadline: 'El clima cálido y húmedo puede favorecer enfermedades foliares en cultivos sensibles.',
+    diseaseAction: 'Aumenta el monitoreo de síntomas fúngicos y evita crear más humedad en el dosel.',
+    strongWindHeadline: 'El viento fuerte puede reducir la precisión de la pulverización y aumentar el estrés mecánico.',
+    strongWindAction: 'Pospón pulverizaciones e inspecciona campos expuestos y cortinas rompeviento.',
+    moderateWindHeadline: 'El viento moderado aún puede afectar la deriva y la uniformidad de aplicación.',
+    moderateWindAction: 'Usa cautela al pulverizar y verifica boquillas, presión y dirección del viento.',
+    heatHeadline: 'El riesgo de estrés térmico está aumentando para cultivos, ganado y plántulas.',
+    heatAction: 'Prioriza riego, sombra y trabajo de campo en horas más frescas.',
+    coldHeadline: 'Las bajas temperaturas nocturnas pueden ralentizar el crecimiento de cultivos sensibles.',
+    coldAction: 'Monitorea cultivos vulnerables y protege viveros y plántulas.',
+    manageableHeadline: 'Las condiciones actuales parecen manejables para operaciones de rutina en muchos sistemas de cultivo.',
+    manageableAction: 'Sigue monitoreando pronósticos locales y umbrales específicos del cultivo antes de operaciones importantes.',
+  },
+};
+
+function getLanguage(req) {
+  const requested = String(req.query.lang || req.headers['accept-language'] || 'en')
+    .split(',')[0]
+    .split('-')[0]
+    .toLowerCase();
+
+  return SUPPORTED_LANGUAGES.includes(requested) ? requested : 'en';
+}
+
+function textFor(language) {
+  return localizedText[language] || localizedText.en;
+}
+
+function buildInsight(weather, language = 'en') {
+  const text = textFor(language);
   const insights = [];
   const actions = [];
 
   if (weather.forecastRainTotal >= 20 || weather.forecastRainProbability >= 70) {
-    insights.push('Wet conditions are likely over the next 24 hours, which may slow machinery access and raise fungal pressure.');
-    actions.push('Avoid spraying or harvesting during the wettest window and review drainage-sensitive fields.');
+    insights.push(text.wetHeadline);
+    actions.push(text.wetAction);
   } else if (weather.rainfall <= 0.5 && weather.evapotranspiration >= 4) {
-    insights.push('Moisture loss is elevated relative to rainfall, suggesting rising short-term water stress risk.');
-    actions.push('Check irrigation timing, soil moisture, and young plants with shallow root systems.');
+    insights.push(text.waterStressHeadline);
+    actions.push(text.waterStressAction);
   }
 
   if (weather.humidity >= 85 && weather.temperature >= 18 && weather.temperature <= 30) {
-    insights.push('Warm and humid weather can favor foliar disease development in sensitive crops.');
-    actions.push('Increase scouting frequency for fungal symptoms and avoid creating extra canopy humidity.');
+    insights.push(text.diseaseHeadline);
+    actions.push(text.diseaseAction);
   }
 
   if (weather.wind >= 25) {
-    insights.push('Strong wind may reduce spray accuracy and increase lodging or mechanical stress in taller crops.');
-    actions.push('Postpone spraying and inspect exposed fields, trellised crops, and windbreaks.');
+    insights.push(text.strongWindHeadline);
+    actions.push(text.strongWindAction);
   } else if (weather.wind >= 15) {
-    insights.push('Moderate wind may still affect pesticide drift and application uniformity.');
-    actions.push('Use caution with spraying and verify nozzle setup and field direction.');
+    insights.push(text.moderateWindHeadline);
+    actions.push(text.moderateWindAction);
   }
 
   if (weather.forecastMaxTemp >= 32) {
-    insights.push('Heat stress risk is rising for crops, livestock, and recently transplanted seedlings.');
-    actions.push('Prioritize irrigation, shade, and field work in cooler hours where possible.');
+    insights.push(text.heatHeadline);
+    actions.push(text.heatAction);
   } else if (weather.forecastMinTemp <= 5) {
-    insights.push('Cool overnight temperatures may slow growth and increase stress in cold-sensitive crops.');
-    actions.push('Monitor vulnerable crops and protect nurseries, seedlings, and high-value horticulture.');
+    insights.push(text.coldHeadline);
+    actions.push(text.coldAction);
   }
 
   if (insights.length === 0) {
-    insights.push('Current conditions look relatively manageable for routine field operations in many cropping systems.');
-    actions.push('Keep monitoring local forecasts, field trafficability, and crop-specific thresholds before major operations.');
+    insights.push(text.manageableHeadline);
+    actions.push(text.manageableAction);
   }
 
   return {
@@ -310,18 +393,21 @@ function buildInsight(weather) {
   };
 }
 
-function buildSummary(weather) {
-  if (weather.rainfall > 0 || weather.forecastRainProbability >= 60) return 'Rain likely';
-  if (weather.cloudCover >= 70) return 'Mostly cloudy';
-  if (weather.wind >= 20) return 'Windy';
-  return 'Partly cloudy';
+function buildSummary(weather, language = 'en') {
+  const text = textFor(language);
+
+  if (weather.rainfall > 0 || weather.forecastRainProbability >= 60) return text.rainLikely;
+  if (weather.cloudCover >= 70) return text.mostlyCloudy;
+  if (weather.wind >= 20) return text.windy;
+  return text.partlyCloudy;
 }
 
 module.exports.getWeather = async (req, res, next) => {
   try {
+    const language = getLanguage(req);
     const location = await geocodeCity(req.query.city, req);
     const weather = await getOpenMeteoWeather(location.latitude, location.longitude);
-    const agriculturalInsight = buildInsight(weather);
+    const agriculturalInsight = buildInsight(weather, language);
 
     return res.send({
       city: location.name,
@@ -341,11 +427,12 @@ module.exports.getWeather = async (req, res, next) => {
       forecastMaxTemp: weather.forecastMaxTemp,
       forecastMinTemp: weather.forecastMinTemp,
       evapotranspiration: weather.evapotranspiration,
-      summary: buildSummary(weather),
+      summary: buildSummary(weather, language),
       insight: agriculturalInsight.headline,
       insightDetails: agriculturalInsight.details,
       recommendations: agriculturalInsight.recommendations,
       riskLevel: agriculturalInsight.riskLevel,
+      language,
       source: 'Open-Meteo Geocoding + Open-Meteo Current Weather + 3-day forecast',
     });
   } catch (error) {

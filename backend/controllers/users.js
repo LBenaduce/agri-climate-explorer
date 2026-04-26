@@ -11,7 +11,26 @@ const {
   USER_NOT_FOUND_MESSAGE,
 } = require('../utils/constants');
 
-const { JWT_SECRET = 'dev-secret' } = process.env;
+function getJwtSecret() {
+  const { JWT_SECRET, NODE_ENV = 'development' } = process.env;
+
+  if (JWT_SECRET) {
+    return JWT_SECRET;
+  }
+
+  if (NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET is required in production');
+  }
+
+  return 'dev-secret';
+}
+
+const SUPPORTED_LANGUAGES = ['en', 'pt', 'es', 'fr', 'de', 'it', 'ru', 'zh', 'ja', 'ar', 'hi'];
+
+function normalizeLanguage(language = 'en') {
+  const normalized = String(language).split('-')[0].toLowerCase();
+  return SUPPORTED_LANGUAGES.includes(normalized) ? normalized : 'en';
+}
 
 module.exports.register = async (req, res, next) => {
   try {
@@ -20,6 +39,7 @@ module.exports.register = async (req, res, next) => {
       email,
       password,
       marketingConsent = false,
+      preferredLanguage = 'en',
     } = req.body;
 
     const normalizedName = String(name).trim();
@@ -31,6 +51,7 @@ module.exports.register = async (req, res, next) => {
       email: normalizedEmail,
       password: passwordHash,
       marketingConsent,
+      preferredLanguage: normalizeLanguage(preferredLanguage),
     });
 
     try {
@@ -44,6 +65,7 @@ module.exports.register = async (req, res, next) => {
       name: user.name,
       email: user.email,
       marketingConsent: user.marketingConsent,
+      preferredLanguage: user.preferredLanguage,
     });
   } catch (err) {
     console.error('Registration error:', err);
@@ -71,7 +93,7 @@ module.exports.login = (req, res, next) => {
           throw new UnauthorizedError(INVALID_AUTH_MESSAGE);
         }
 
-        const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ _id: user._id }, getJwtSecret(), { expiresIn: '7d' });
         res.send({ token });
       });
     })
@@ -80,6 +102,25 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getProfile = (req, res, next) => {
   User.findById(req.user._id)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError(USER_NOT_FOUND_MESSAGE);
+      }
+
+      res.send(user);
+    })
+    .catch(next);
+};
+
+module.exports.updatePreferredLanguage = (req, res, next) => {
+  const { preferredLanguage } = req.body;
+  const normalizedLanguage = normalizeLanguage(preferredLanguage);
+
+  User.findByIdAndUpdate(
+    req.user._id,
+    { preferredLanguage: normalizedLanguage },
+    { new: true, runValidators: true }
+  )
     .then((user) => {
       if (!user) {
         throw new NotFoundError(USER_NOT_FOUND_MESSAGE);

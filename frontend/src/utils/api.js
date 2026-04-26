@@ -17,10 +17,14 @@ function handleResponse(response) {
 }
 
 export const weatherApi = {
-  getWeather(city) {
-    return fetch(
-      `${BASE_URL}/weather?city=${encodeURIComponent(city)}`
-    ).then(handleResponse);
+  getWeather(city, language = "en") {
+    const params = new URLSearchParams({ city, lang: language });
+
+    return fetch(`${BASE_URL}/weather?${params.toString()}`, {
+      headers: {
+        "Accept-Language": language,
+      },
+    }).then(handleResponse);
   },
 };
 
@@ -46,6 +50,17 @@ export const authApi = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    }).then(handleResponse);
+  },
+
+  updatePreferredLanguage(token, preferredLanguage) {
+    return fetch(`${BASE_URL}/users/me/language`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ preferredLanguage }),
     }).then(handleResponse);
   },
 };

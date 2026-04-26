@@ -14,7 +14,26 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 import { authApi, locationsApi, weatherApi } from "./utils/api";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
-import translations from "./utils/translations";
+import translations, { languageOptions } from "./utils/translations";
+
+function detectInitialLanguage() {
+  const supportedLanguages = languageOptions.map((option) => option.code);
+  const savedLanguage = localStorage.getItem("language");
+
+  if (savedLanguage && supportedLanguages.includes(savedLanguage)) {
+    return savedLanguage;
+  }
+
+  const browserLanguages = navigator.languages?.length
+    ? navigator.languages
+    : [navigator.language];
+
+  const detectedLanguage = browserLanguages
+    .map((item) => item.split("-")[0])
+    .find((item) => supportedLanguages.includes(item));
+
+  return detectedLanguage || "en";
+}
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -23,12 +42,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [uiError, setUiError] = useState("");
   const [activeModal, setActiveModal] = useState("");
-
-  const [language, setLanguage] = useState(() => {
-    const savedLanguage = localStorage.getItem("language");
-    const browserLanguage = navigator.language.split("-")[0];
-    return savedLanguage || browserLanguage || "en";
-  });
+  const [language, setLanguage] = useState(detectInitialLanguage);
 
   const t = translations[language] || translations.en;
   const isLoggedIn = Boolean(currentUser);
@@ -45,6 +59,11 @@ function App() {
       .getProfile(token)
       .then((user) => {
         setCurrentUser(user);
+
+        if (user.preferredLanguage && translations[user.preferredLanguage]) {
+          setLanguage(user.preferredLanguage);
+        }
+
         return locationsApi.getSavedLocations(token);
       })
       .then((data) => setSavedLocations(data))
@@ -68,13 +87,26 @@ function App() {
     setActiveModal("register");
   }
 
+  function handleLanguageChange(nextLanguage) {
+    setLanguage(nextLanguage);
+    localStorage.setItem("language", nextLanguage);
+
+    const token = localStorage.getItem("jwt");
+    if (!token) return;
+
+    authApi
+      .updatePreferredLanguage(token, nextLanguage)
+      .then((user) => setCurrentUser(user))
+      .catch(() => {});
+  }
+
   function handleWeatherSearch(city) {
     setLoading(true);
     setUiError("");
     setWeather(null);
 
     weatherApi
-      .getWeather(city)
+      .getWeather(city, language)
       .then((data) => {
         setUiError("");
         setWeather(data);
@@ -90,7 +122,7 @@ function App() {
     setUiError("");
 
     authApi
-      .register({ name, email, password, marketingConsent })
+      .register({ name, email, password, marketingConsent, preferredLanguage: language })
       .then(() => authApi.login({ email, password }))
       .then(({ token }) => {
         localStorage.setItem("jwt", token);
@@ -98,6 +130,9 @@ function App() {
       })
       .then((user) => {
         setCurrentUser(user);
+        if (user.preferredLanguage && translations[user.preferredLanguage]) {
+          setLanguage(user.preferredLanguage);
+        }
         setSavedLocations([]);
         closeModal();
       })
@@ -120,6 +155,9 @@ function App() {
       })
       .then(([user, locations]) => {
         setCurrentUser(user);
+        if (user.preferredLanguage && translations[user.preferredLanguage]) {
+          setLanguage(user.preferredLanguage);
+        }
         setSavedLocations(locations);
         closeModal();
       })
@@ -184,7 +222,7 @@ function App() {
           onRegisterClick={openRegister}
           onLogout={handleLogout}
           language={language}
-          setLanguage={setLanguage}
+          setLanguage={handleLanguageChange}
           t={t}
         />
 

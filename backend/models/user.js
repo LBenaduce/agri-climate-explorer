@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    preferredLanguage: {
+      type: String,
+      enum: ['en', 'pt', 'es', 'fr', 'de', 'it', 'ru', 'zh', 'ja', 'ar', 'hi'],
+      default: 'en',
+    },
   },
   { timestamps: true }
 );
