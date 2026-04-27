@@ -16,6 +16,25 @@ import { authApi, locationsApi, weatherApi } from "./utils/api";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
 import translations, { languageOptions } from "./utils/translations";
 
+function normalizeLanguage(languageCode) {
+  if (!languageCode) return "";
+
+  const code = languageCode.toLowerCase();
+
+  if (code.startsWith("zh")) return "zh";
+  if (code.startsWith("pt")) return "pt";
+  if (code.startsWith("es")) return "es";
+  if (code.startsWith("fr")) return "fr";
+  if (code.startsWith("de")) return "de";
+  if (code.startsWith("it")) return "it";
+  if (code.startsWith("ru")) return "ru";
+  if (code.startsWith("ja")) return "ja";
+  if (code.startsWith("ar")) return "ar";
+  if (code.startsWith("hi")) return "hi";
+
+  return code.split("-")[0];
+}
+
 function detectInitialLanguage() {
   const supportedLanguages = languageOptions.map((option) => option.code);
   const savedLanguage = localStorage.getItem("language");
@@ -26,10 +45,10 @@ function detectInitialLanguage() {
 
   const browserLanguages = navigator.languages?.length
     ? navigator.languages
-    : [navigator.language];
+    : [navigator.language || "en"];
 
   const detectedLanguage = browserLanguages
-    .map((item) => item.split("-")[0])
+    .map(normalizeLanguage)
     .find((item) => supportedLanguages.includes(item));
 
   return detectedLanguage || "en";
