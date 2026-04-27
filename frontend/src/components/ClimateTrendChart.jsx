@@ -1,7 +1,8 @@
 import { buildTrendData } from "../utils/agriInsights";
+import { formatWeatherValue } from "../utils/userPreferences";
 import "./ClimateTrendChart.css";
 
-function ClimateTrendChart({ weather, t, language }) {
+function ClimateTrendChart({ weather, t, language, units = "metric" }) {
   const data = buildTrendData(weather);
   const weekDays = t.weekDays || ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
@@ -15,12 +16,12 @@ function ClimateTrendChart({ weather, t, language }) {
             <div
               className="trend-card__bar trend-card__bar_temp"
               style={{ height: `${Math.max(18, item.temp * 3)}px` }}
-              title={`${item.temp}°C`}
+              title={formatWeatherValue(item.temp, "temperature", units)}
             />
             <div
               className="trend-card__bar trend-card__bar_rain"
               style={{ height: `${Math.max(10, item.rain * 5)}px` }}
-              title={`${item.rain} mm`}
+              title={formatWeatherValue(item.rain, "rainfall", units)}
             />
             <span className="trend-card__label">{weekDays[index] || item.day}</span>
           </div>

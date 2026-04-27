@@ -8,14 +8,15 @@ function DashboardPage({
   error,
   onSaveLocation,
   t,
-  language
+  language,
+  userPreferences
 }) {
   return (
     <section className="section">
       <h1 className="page-heading">{t.dashboardTitle}</h1>
       <p className="page-subtext">{t.dashboardText}</p>
 
-      <SearchForm onSearch={onSearch} t={t} />
+      <SearchForm onSearch={onSearch} t={t} defaultCity={userPreferences?.city} />
 
       <WeatherResultsSection
         weather={weather}
@@ -25,6 +26,7 @@ function DashboardPage({
         onSaveLocation={onSaveLocation}
         t={t}
         language={language}
+        userPreferences={userPreferences}
         className="section section_compact-top"
       />
     </section>

@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { authApi, locationsApi, weatherApi } from "./utils/api";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
 import translations, { languageOptions } from "./utils/translations";
+import { detectBrowserLanguage, detectLocationPreferences } from "./utils/userPreferences";
 
 function normalizeLanguage(languageCode) {
   if (!languageCode) return "";
@@ -43,9 +44,7 @@ function detectInitialLanguage() {
     return savedLanguage;
   }
 
-  const browserLanguages = navigator.languages?.length
-    ? navigator.languages
-    : [navigator.language || "en"];
+  const browserLanguages = detectBrowserLanguage();
 
   const detectedLanguage = browserLanguages
     .map(normalizeLanguage)
@@ -62,6 +61,12 @@ function App() {
   const [uiError, setUiError] = useState("");
   const [activeModal, setActiveModal] = useState("");
   const [language, setLanguage] = useState(detectInitialLanguage);
+  const [userPreferences, setUserPreferences] = useState({
+    country: "",
+    city: "",
+    region: "",
+    units: localStorage.getItem("units") || "metric",
+  });
 
   const t = translations[language] || translations.en;
   const isLoggedIn = Boolean(currentUser);
@@ -69,6 +74,27 @@ function App() {
   useEffect(() => {
     localStorage.setItem("language", language);
   }, [language]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    detectLocationPreferences().then((preferences) => {
+      if (!isMounted) return;
+
+      const savedUnits = localStorage.getItem("units");
+      const nextPreferences = {
+        ...preferences,
+        units: savedUnits || preferences.units,
+      };
+
+      setUserPreferences(nextPreferences);
+      localStorage.setItem("units", nextPreferences.units);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -259,6 +285,7 @@ function App() {
                   onSaveLocation={handleSaveLocation}
                   t={t}
                   language={language}
+                  userPreferences={userPreferences}
                 />
               }
             />
@@ -275,6 +302,7 @@ function App() {
                     onSaveLocation={handleSaveLocation}
                     t={t}
                     language={language}
+                    userPreferences={userPreferences}
                   />
                 </ProtectedRoute>
               }
@@ -289,6 +317,7 @@ function App() {
                     onDelete={handleDeleteLocation}
                     t={t}
                     language={language}
+                    userPreferences={userPreferences}
                   />
                 </ProtectedRoute>
               }

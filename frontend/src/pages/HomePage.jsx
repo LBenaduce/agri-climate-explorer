@@ -9,7 +9,8 @@ function HomePage({
   onSearch,
   onSaveLocation,
   t,
-  language
+  language,
+  userPreferences
 }) {
   return (
     <>
@@ -37,7 +38,7 @@ function HomePage({
       </section>
 
       <section className="section">
-        <SearchForm onSearch={onSearch} t={t} />
+        <SearchForm onSearch={onSearch} t={t} defaultCity={userPreferences?.city} />
       </section>
 
       <WeatherResultsSection
@@ -48,6 +49,7 @@ function HomePage({
         onSaveLocation={onSaveLocation}
         t={t}
         language={language}
+        userPreferences={userPreferences}
         className="section"
       />
     </>

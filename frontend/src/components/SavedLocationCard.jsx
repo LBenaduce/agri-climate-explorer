@@ -1,7 +1,8 @@
+import { formatWeatherValue } from "../utils/userPreferences";
 import { translateSummaryAndInsight } from "../utils/weatherTranslations";
 import "./SavedLocationCard.css";
 
-function SavedLocationCard({ item, onDelete, t, language }) {
+function SavedLocationCard({ item, onDelete, t, language, units = "metric" }) {
   const { summary, insight } = translateSummaryAndInsight(item, language);
 
   return (
@@ -10,10 +11,10 @@ function SavedLocationCard({ item, onDelete, t, language }) {
         {item.city}, {item.country}
       </h3>
       <ul className="saved-card__meta">
-        <li>{t.temperature}: {item.temperature}°C</li>
+        <li>{t.temperature}: {formatWeatherValue(item.temperature, "temperature", units)}</li>
         <li>{t.humidity}: {item.humidity}%</li>
-        <li>{t.rainfall}: {item.rainfall} mm</li>
-        <li>{t.wind}: {item.wind} km/h</li>
+        <li>{t.rainfall}: {formatWeatherValue(item.rainfall, "rainfall", units)}</li>
+        <li>{t.wind}: {formatWeatherValue(item.wind, "wind", units)}</li>
         <li>{summary}</li>
         <li>{insight}</li>
       </ul>

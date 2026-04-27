@@ -1,6 +1,6 @@
 import SavedLocationCard from "../components/SavedLocationCard";
 
-function SavedLocationsPage({ items, onDelete, t, language }) {
+function SavedLocationsPage({ items, onDelete, t, language, userPreferences }) {
   return (
     <section className="section">
       <h1 className="page-heading">{t.savedTitle}</h1>
@@ -15,6 +15,7 @@ function SavedLocationsPage({ items, onDelete, t, language }) {
               onDelete={onDelete}
               t={t}
               language={language}
+              units={userPreferences?.units}
             />
           ))}
         </div>

@@ -1,7 +1,8 @@
+import { formatWeatherValue } from "../utils/userPreferences";
 import { translateSummaryAndInsight } from "../utils/weatherTranslations";
 import "./WeatherCard.css";
 
-function WeatherCard({ weather, isLoggedIn, onSave, t, language }) {
+function WeatherCard({ weather, isLoggedIn, onSave, t, language, units = "metric" }) {
   if (!weather) return null;
 
   const { summary, insight } = translateSummaryAndInsight(weather, language);
@@ -12,10 +13,10 @@ function WeatherCard({ weather, isLoggedIn, onSave, t, language }) {
       <h2 className="card__title">{locationParts.join(", ")}</h2>
 
       <ul className="card__meta">
-        <li>{t.temperature}: {weather.temperature}°C</li>
+        <li>{t.temperature}: {formatWeatherValue(weather.temperature, "temperature", units)}</li>
         <li>{t.humidity}: {weather.humidity}%</li>
-        <li>{t.rainfall}: {weather.rainfall} mm</li>
-        <li>{t.wind}: {weather.wind} km/h</li>
+        <li>{t.rainfall}: {formatWeatherValue(weather.rainfall, "rainfall", units)}</li>
+        <li>{t.wind}: {formatWeatherValue(weather.wind, "wind", units)}</li>
         <li>{t.conditions}: {summary}</li>
       </ul>
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./SearchForm.css";
 
-function SearchForm({ onSearch, t }) {
+function SearchForm({ onSearch, t, defaultCity = "" }) {
   const [city, setCity] = useState("");
 
   function handleSubmit(event) {
@@ -21,7 +21,7 @@ function SearchForm({ onSearch, t }) {
           id="city"
           className="search__input"
           type="text"
-          placeholder={t.searchPlaceholder}
+          placeholder={defaultCity ? `${t.searchPlaceholder} Ex: ${defaultCity}` : t.searchPlaceholder}
           value={city}
           onChange={(event) => setCity(event.target.value)}
           required

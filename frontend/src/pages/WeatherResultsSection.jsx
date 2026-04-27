@@ -13,6 +13,7 @@ function WeatherResultsSection({
   onSaveLocation,
   t,
   language,
+  userPreferences,
   className = "",
 }) {
   const classes = ["weather-results", className].filter(Boolean).join(" ");
@@ -29,10 +30,11 @@ function WeatherResultsSection({
             onSave={onSaveLocation}
             t={t}
             language={language}
+            units={userPreferences?.units}
           />
           <div className="grid startup-grid">
             <RiskScoreCard weather={weather} t={t} />
-            <ClimateTrendChart weather={weather} t={t} language={language} />
+            <ClimateTrendChart weather={weather} t={t} language={language} units={userPreferences?.units} />
             <RecommendationsCard weather={weather} t={t} />
             <GlobalCoverageCard weather={weather} t={t} />
           </div>
