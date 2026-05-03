@@ -239,3 +239,74 @@ ul {
     flex-direction: column;
   }
 }
+
+
+/* Readability upgrade: wider dashboard cards, stronger contrast and mobile spacing */
+.card,
+.saved-card {
+  padding: clamp(22px, 2.2vw, 30px);
+}
+
+.card__title,
+.saved-card__title {
+  color: #ffffff;
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.card__meta,
+.saved-card__meta,
+.card p,
+.saved-card p,
+.page-subtext,
+.hero__text,
+.stat__label,
+.search__hint,
+.error-text,
+.empty-state {
+  color: #d7e4f5;
+}
+
+.card__meta,
+.saved-card__meta {
+  gap: 14px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.card__meta strong,
+.saved-card__meta strong {
+  color: #ffffff;
+}
+
+.startup-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(520px, 100%), 1fr));
+  align-items: stretch;
+}
+
+.startup-grid > .card {
+  min-height: 100%;
+}
+
+@media (max-width: 760px) {
+  .content {
+    width: min(100% - 20px, var(--max));
+  }
+
+  .section {
+    padding: 22px 0;
+  }
+
+  .card,
+  .saved-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .card__meta,
+  .saved-card__meta {
+    padding-left: 18px;
+    font-size: 15px;
+  }
+}
