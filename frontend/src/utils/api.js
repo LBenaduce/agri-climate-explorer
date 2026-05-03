@@ -28,6 +28,23 @@ export const weatherApi = {
   },
 };
 
+
+export const ndviApi = {
+  getNdviHistory({ latitude, longitude, crop = "soybean", weather = {} }) {
+    const params = new URLSearchParams({
+      lat: latitude,
+      lon: longitude,
+      crop,
+      temperature: weather.temperature ?? 0,
+      humidity: weather.humidity ?? 0,
+      rainfall: weather.rainfall ?? 0,
+      forecastRainProbability: weather.forecastRainProbability ?? 0,
+    });
+
+    return fetch(`${BASE_URL}/ndvi?${params.toString()}`).then(handleResponse);
+  },
+};
+
 export const authApi = {
   register(data) {
     return fetch(`${BASE_URL}/signup`, {

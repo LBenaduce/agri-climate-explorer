@@ -497,6 +497,84 @@ const translations = {
   }
 };
 
+
+const ndviTranslationDefaults = {
+  ndviEyebrow: "Satellite vegetation monitoring",
+  mapTitle: "Global Agricultural Intelligence",
+  mapText: "Interactive NDVI-based map with temporal history and automatic crop alerts.",
+  cropLabel: "Crop",
+  cropSoybean: "Soybean",
+  cropRice: "Irrigated rice",
+  mapLocations: "Locations",
+  mapAvgNdvi: "Avg NDVI",
+  mapStressAlerts: "Stress alerts",
+  legendVeryHigh: "Very high",
+  legendHigh: "Active",
+  legendMedium: "Moderate",
+  legendLow: "Low / stress",
+  currentNdvi: "Current NDVI",
+  ndviTrend: "NDVI trend",
+  trend_declining: "Declining",
+  trend_improving: "Improving",
+  trend_stable: "Stable",
+  ndviVeryHigh: "Very high biomass",
+  ndviActive: "Active crop development",
+  ndviModerate: "Moderate vegetation",
+  ndviLow: "Low vegetation / possible stress",
+  ndviFallback: "Fallback estimator",
+  ndviSatellite: "Satellite source",
+  automaticAlerts: "Automatic crop alerts"
+};
+
+Object.keys(translations).forEach((language) => {
+  translations[language] = { ...ndviTranslationDefaults, ...translations[language], ...ndviTranslationDefaults };
+});
+
+translations.pt = {
+  ...translations.pt,
+  ndviEyebrow: "Monitoramento satelital da vegetação",
+  mapTitle: "Inteligência Agrícola Global",
+  mapText: "Mapa interativo baseado em NDVI com histórico temporal e alertas automáticos por cultura.",
+  cropLabel: "Cultura",
+  cropSoybean: "Soja",
+  cropRice: "Arroz irrigado",
+  mapLocations: "Locais",
+  mapAvgNdvi: "NDVI médio",
+  mapStressAlerts: "Alertas de estresse",
+  legendVeryHigh: "Muito alto",
+  legendHigh: "Ativo",
+  legendMedium: "Moderado",
+  legendLow: "Baixo / estresse",
+  currentNdvi: "NDVI atual",
+  ndviTrend: "Tendência do NDVI",
+  trend_declining: "Em queda",
+  trend_improving: "Melhorando",
+  trend_stable: "Estável",
+  ndviVeryHigh: "Biomassa muito alta",
+  ndviActive: "Desenvolvimento ativo da cultura",
+  ndviModerate: "Vegetação moderada",
+  ndviLow: "Baixa vegetação / possível estresse",
+  ndviFallback: "Estimador agronômico",
+  ndviSatellite: "Fonte satelital",
+  automaticAlerts: "Alertas automáticos por cultura"
+};
+
+translations.es = {
+  ...translations.es,
+  ndviEyebrow: "Monitoreo satelital de vegetación",
+  mapTitle: "Inteligencia Agrícola Global",
+  mapText: "Mapa interactivo basado en NDVI con historial temporal y alertas automáticas por cultivo.",
+  cropLabel: "Cultivo",
+  cropSoybean: "Soja",
+  cropRice: "Arroz irrigado",
+  mapLocations: "Ubicaciones",
+  mapAvgNdvi: "NDVI promedio",
+  mapStressAlerts: "Alertas de estrés",
+  currentNdvi: "NDVI actual",
+  ndviTrend: "Tendencia NDVI",
+  automaticAlerts: "Alertas automáticas por cultivo"
+};
+
 export const languageOptions = [
   { code: "en", label: "English" },
   { code: "pt", label: "Português" },

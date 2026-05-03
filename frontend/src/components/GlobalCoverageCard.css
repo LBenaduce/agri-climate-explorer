@@ -1,7 +1,10 @@
 .coverage-card_map { overflow: hidden; }
 .coverage-card__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.coverage-card__eyebrow { margin: 0 0 6px; color: #86efac; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .coverage-card__text { margin: 6px 0 0; }
-.coverage-card__badge { flex: 0 0 auto; border: 1px solid rgba(74, 222, 128, 0.35); border-radius: 999px; padding: 6px 10px; background: rgba(34, 197, 94, 0.12); color: #bbf7d0; font-size: 12px; font-weight: 700; }
+.coverage-card__controls { flex: 0 0 170px; border: 1px solid rgba(255,255,255,.09); border-radius: 16px; padding: 10px; background: rgba(255,255,255,.04); }
+.coverage-card__select-label { display: block; margin-bottom: 6px; color: rgba(255,255,255,.62); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.coverage-card__select { width: 100%; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 9px 10px; background: #102018; color: #f8fafc; font-weight: 700; }
 .coverage-card__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
 .coverage-card__stats div { border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 10px; background: rgba(255,255,255,.04); }
 .coverage-card__stats span { display: block; color: #fff; font-size: 20px; font-weight: 800; line-height: 1; }
@@ -14,8 +17,24 @@
 .coverage-card__legend { display: flex; flex-wrap: wrap; gap: 10px 14px; margin: 12px 0; color: rgba(255,255,255,.72); font-size: 12px; }
 .coverage-card__legend span { display: inline-flex; align-items: center; gap: 6px; }
 .coverage-card__legend-dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
+.coverage-card__legend-dot_very-high { background: #16a34a; }
 .coverage-card__legend-dot_high { background: #22c55e; }
 .coverage-card__legend-dot_medium { background: #eab308; }
 .coverage-card__legend-dot_low { background: #ef4444; }
-.coverage-card__insight { margin-top: 0; }
-@media screen and (max-width: 640px) { .coverage-card__header { flex-direction: column; } .coverage-card__stats { grid-template-columns: 1fr; } .coverage-card__map { height: 260px; } }
+.coverage-card__ndvi-panel { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0; }
+.coverage-card__ndvi-panel > div { border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 12px; background: rgba(15, 23, 42, .4); }
+.coverage-card__panel-label { margin: 0 0 6px; color: rgba(255,255,255,.55); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.coverage-card__ndvi-panel strong { display: block; color: #fff; font-size: 24px; line-height: 1; }
+.coverage-card__ndvi-panel span { display: block; margin-top: 6px; color: rgba(255,255,255,.7); font-size: 12px; }
+.coverage-card__trend { margin: 12px 0; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 12px; background: rgba(255,255,255,.035); color: #86efac; }
+.coverage-card__trend svg { display: block; width: 100%; height: 70px; }
+.coverage-card__trend-labels { display: flex; justify-content: space-between; color: rgba(255,255,255,.55); font-size: 11px; }
+.coverage-card__alerts { display: grid; gap: 10px; margin-top: 12px; }
+.coverage-card__alerts h4 { margin: 0; color: #f8fafc; font-size: 15px; }
+.coverage-card__alert { border: 1px solid rgba(255,255,255,.08); border-left-width: 4px; border-radius: 14px; padding: 11px 12px; background: rgba(255,255,255,.035); }
+.coverage-card__alert strong { display: block; color: #fff; font-size: 13px; }
+.coverage-card__alert p { margin: 5px 0 0; color: rgba(255,255,255,.68); font-size: 12px; line-height: 1.45; }
+.coverage-card__alert_high { border-left-color: #ef4444; }
+.coverage-card__alert_medium { border-left-color: #eab308; }
+.coverage-card__alert_low { border-left-color: #22c55e; }
+@media screen and (max-width: 640px) { .coverage-card__header { flex-direction: column; } .coverage-card__controls { width: 100%; flex-basis: auto; } .coverage-card__stats, .coverage-card__ndvi-panel { grid-template-columns: 1fr; } .coverage-card__map { height: 260px; } }
