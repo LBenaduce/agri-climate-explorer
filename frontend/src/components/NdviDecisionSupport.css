@@ -1,0 +1,328 @@
+.ndvi-dss {
+  grid-column: 1 / -1;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ndvi-dss__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.ndvi-dss__eyebrow,
+.ndvi-dss__section-label {
+  display: inline-flex;
+  margin-bottom: 8px;
+  color: #9be7ba;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.ndvi-dss__subtitle {
+  margin: 8px 0 0;
+  max-width: 760px;
+}
+
+.ndvi-dss__layout {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.ndvi-dss__left,
+.ndvi-dss__right {
+  min-width: 0;
+}
+
+.ndvi-dss__region-panel,
+.ndvi-dss__crop-panel,
+.ndvi-dss__disease-panel,
+.ndvi-dss__analytics-panel {
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  background: rgba(255,255,255,.045);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+.ndvi-dss__region-panel h4,
+.ndvi-dss__crop-panel h4,
+.ndvi-dss__disease-panel h4 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.22;
+}
+
+.ndvi-dss__region-panel p,
+.ndvi-dss__crop-panel p,
+.ndvi-dss__disease-panel p {
+  margin: 12px 0 0;
+  color: rgba(255,255,255,.78);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.ndvi-dss__crop-helper {
+  display: block;
+  margin: 12px 0 10px;
+  color: rgba(255,255,255,.7);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ndvi-dss__crop-toggle {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.ndvi-dss__crop-button {
+  min-height: 56px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, .88);
+  color: rgba(255,255,255,.84);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 850;
+  transition: background .18s ease, color .18s ease, transform .18s ease, border-color .18s ease;
+  text-align: left;
+}
+
+.ndvi-dss__crop-button span {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 19px;
+}
+
+.ndvi-dss__crop-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(103, 210, 143, .52);
+}
+
+.ndvi-dss__crop-button_active {
+  border-color: rgba(103, 210, 143, .75);
+  background: linear-gradient(135deg, rgba(103, 210, 143, .95), rgba(139, 240, 179, .95));
+  color: #032111;
+}
+
+.ndvi-dss__disease-panel {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(260px, 1.05fr);
+  gap: 16px;
+}
+
+.ndvi-dss__disease-copy,
+.ndvi-dss__disease-list {
+  min-width: 0;
+}
+
+.ndvi-dss__disease-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  align-content: start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ndvi-dss__disease-list li {
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: rgba(103, 210, 143, .09);
+  color: #d8ffe7;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.ndvi-dss__scout-box {
+  grid-column: 1 / -1;
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(234, 179, 8, .1);
+  color: rgba(255,255,255,.84);
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.ndvi-dss__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.ndvi-dss__metrics div {
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(255,255,255,.04);
+  min-width: 0;
+}
+
+.ndvi-dss__metrics span {
+  display: block;
+  color: #fff;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.ndvi-dss__metrics small {
+  display: block;
+  margin-top: 7px;
+  color: rgba(255,255,255,.7);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.ndvi-dss__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: rgba(255,255,255,.86);
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.ndvi-dss__status i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 18px currentColor;
+  flex: 0 0 auto;
+}
+
+.ndvi-dss__chart {
+  width: 100%;
+  min-height: 120px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  background: rgba(255,255,255,.035);
+  margin-bottom: 16px;
+}
+
+.ndvi-dss__chart-line {
+  stroke: rgba(134, 239, 172, .9);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ndvi-dss__alerts h4 {
+  margin: 0 0 12px;
+  color: rgba(255,255,255,.94);
+  font-size: 18px;
+}
+
+.ndvi-dss__alert {
+  border: 1px solid rgba(255,255,255,.08);
+  border-left-width: 5px;
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,.04);
+  margin-bottom: 12px;
+}
+
+.ndvi-dss__alert strong {
+  display: block;
+  color: #fff;
+  margin-bottom: 6px;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.ndvi-dss__alert p {
+  margin: 6px 0 0;
+  color: rgba(255,255,255,.78);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.ndvi-dss__alert_low { border-left-color: #22c55e; }
+.ndvi-dss__alert_medium { border-left-color: #eab308; }
+.ndvi-dss__alert_high { border-left-color: #ef4444; }
+
+@media screen and (max-width: 980px) {
+  .ndvi-dss__layout,
+  .ndvi-dss__disease-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .ndvi-dss__region-panel,
+  .ndvi-dss__region-panel,
+  .ndvi-dss__crop-panel,
+  .ndvi-dss__disease-panel,
+  .ndvi-dss__analytics-panel {
+    padding: 16px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .ndvi-dss__header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ndvi-dss__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .ndvi-dss__crop-button {
+    min-height: 52px;
+    text-align: center;
+  }
+
+  .ndvi-dss__disease-list {
+    grid-template-columns: 1fr;
+  }
+
+  .ndvi-dss__chart {
+    min-height: 108px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .ndvi-dss {
+    border-radius: 18px;
+  }
+
+  .ndvi-dss__region-panel,
+  .ndvi-dss__region-panel,
+  .ndvi-dss__crop-panel,
+  .ndvi-dss__disease-panel,
+  .ndvi-dss__analytics-panel {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .ndvi-dss__alert {
+    padding: 13px;
+  }
+}
+
+
+@media screen and (max-width: 520px) {
+  .ndvi-dss__crop-toggle {
+    grid-template-columns: 1fr;
+  }
+
+  .ndvi-dss__crop-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

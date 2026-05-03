@@ -1,0 +1,24 @@
+.search {
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+}
+
+.search__row {
+  display: flex;
+  gap: 12px;
+}
+
+.search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+}
+
+.search__input::placeholder {
+  color: #93a4bb;
+}

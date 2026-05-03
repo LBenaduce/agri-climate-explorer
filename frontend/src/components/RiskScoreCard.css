@@ -1,0 +1,41 @@
+.risk-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.risk-card__badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.risk-card__gauge {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.risk-card__ring {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at center, rgba(9,17,31,1) 0 52%, transparent 53%),
+    conic-gradient(from 180deg, rgba(103,210,143,.9), rgba(255,210,90,.9), rgba(244,132,132,.95));
+  box-shadow: inset 0 0 22px rgba(255,255,255,.06);
+}
+
+.risk-card__value {
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.risk-card_level_low .risk-card__badge { color: #aef0c5; }
+.risk-card_level_medium .risk-card__badge { color: #ffe6a1; }
+.risk-card_level_high .risk-card__badge { color: #ffb2b2; }
